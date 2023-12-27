@@ -9,7 +9,7 @@ export default defineEventHandler(async event => {
                 name: true
             }
         });
-        setResponseStatus(event, 200);
+
         return users
     } catch (error) {
         console.log(error)

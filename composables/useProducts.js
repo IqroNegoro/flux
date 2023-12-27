@@ -1,0 +1,1 @@
+// export const getProducts = async (url, options) => await useApi("")

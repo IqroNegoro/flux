@@ -6,15 +6,36 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id String @id @default(uuid())
+model users {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
   email String @unique
   name String
   password String
+  tokens tokens?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model products {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  stock Int @default(0)
+  price Int @default(0)
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model tokens {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId @unique
+  user users @relation(fields: [userId], references: [id])
+  token String?
+  expired DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
