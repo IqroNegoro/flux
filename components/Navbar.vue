@@ -9,6 +9,10 @@
                 <NuxtLink :to="{name: 'login'}" class="text-sm rounded-md border border-secondary flex justify-center items-center px-4 py-1 font-semibold text-primary"> Login </NuxtLink>
                 <NuxtLink :to="{name: 'register'}" class="text-sm rounded-md bg-primary flex justify-center items-center px-4 py-1 font-semibold text-white"> Register </NuxtLink>
             </div>
+            <div class="flex flex-row justify-center items-center gap-2 border-l pl-3" v-else>
+                <p>{{user.name}}</p>
+                <button class="text-sm rounded-md bg-primary flex justify-center items-center px-4 py-1 font-semibold text-white" @click="logout"> Logout </button>
+            </div>
         </div>
     </div>
 </template>

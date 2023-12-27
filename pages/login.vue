@@ -44,9 +44,8 @@ const handleLogin = async () => {
 
     pendingLogin.value = true;
 
-    const {data, pending, error} = await useApi("login", {
-        method: "POST",
-        body: payload.value
+    const {data, pending, error} = await login({
+        ...payload.value
     });
     pendingLogin.value = pending.value
     errorLogin.value = error.value
