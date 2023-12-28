@@ -1,12 +1,12 @@
 import prisma from "../db";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import bodyValidator from "../validator"
+import bodyValidator from "../validator/index"
 
 export default defineEventHandler(async e => {
     try {
         const body = await readBody(e);
-        console.log(body)
+
         const validating = bodyValidator(body).isEmail("email", "Fill correct email!").isEmpty("password", "Password cannot be empty")
 
         if (validating.hasErr()) {

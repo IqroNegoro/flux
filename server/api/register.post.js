@@ -1,7 +1,7 @@
 import prisma from "../db";
 import bcrypt from "bcrypt";
 import validator from "validator";
-import bodyValidator from "../validator";
+import bodyValidator from "../validator/index";
 
 export default defineEventHandler(async e => {
     try {
