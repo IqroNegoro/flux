@@ -1,12 +1,26 @@
 import prisma from "../db";
 import bcrypt from "bcrypt";
+import validator from "validator";
+import bodyValidator from "../validator";
 
-export default defineEventHandler(async event => {
+export default defineEventHandler(async e => {
     try {
-        const data = await readBody(event);
+        let body = await readBody(e);
+
+        const validating = bodyValidator(body).isEmpty("name", "Please fill name").isEmail("email", "Fill correct email!").isLength("password", {min: 4}, "Password cannot less than 4 characters").isAlpha("name", "Fill correct name!")
+
+        if (validating.hasErr()) {
+            throw createError({
+                statusCode: 400,
+                data: validating.result
+            })
+        }
+
+        let {email, password, name} = validating.result;
+
         if (await prisma.users.findUnique({
             where: {
-                email: data.email
+                email
             }
         })) {
             return createError({
@@ -15,21 +29,25 @@ export default defineEventHandler(async event => {
             })
         };
         
-        data.password = bcrypt.hashSync(data.password, 10);
+        password = bcrypt.hashSync(password, 10);
+
         const users = await prisma.users.create({
-            data,
+            data: {
+                ...validating.result
+            },
             select: {
                 email: true,
                 name: true,
             }
         });
-        setResponseStatus(event, 201);
+        setResponseStatus(e, 201);
         return users
     } catch (error) {
         console.log(error)
         return createError({
-            status: 500,
-            message: "Something went wrong"
+            status: error.statusCode || 500,
+            message: error.message || "Something went wrong",
+            data: error.data || []
         })
     }
 })

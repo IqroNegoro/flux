@@ -16,6 +16,9 @@ model users {
   name String
   password String
   tokens tokens?
+  carts carts[]
+  transactions transactions[]
+  isAdmin Roles @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
@@ -26,6 +29,33 @@ model products {
   stock Int @default(0)
   price Int @default(0)
   description String?
+  carts carts[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model carts {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  user users @relation(fields: [userId], references: [id])
+  productId String @db.ObjectId
+  product products @relation(fields: [productId], references: [id])
+  quantity Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model transactions {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  orderId Int
+  userId String @db.ObjectId
+  user users @relation(fields: [userId], references: [id])
+  total Int
+  status Status @default(CREATED)
+  products Json
+  method String
+  paymentStatus String
+  midtransResponse Json
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
@@ -38,4 +68,16 @@ model tokens {
   expired DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+}
+
+enum Roles {
+  ADMIN
+  USER
+}
+
+enum Status {
+  CANCEL
+  CREATED
+  PENDING
+  SUCCESS
 }

@@ -8,22 +8,26 @@
                 <h1 class="tracking-wider text-2xl text-primary text-center">Register</h1>
                 <div class="flex flex-col gap-2 w-full">
                     <p class="">Name</p>
-                    <div class="flex flex-row justify-center border-b items-center w-full p-1">
-                        <i class="bx bx-envelope text-2xl pr-1"></i>
+                    <div class="flex flex-row justify-center border-b items-center w-full p-1" :class="{'border-red-500': inputError.name}">
+                        <i class="bx bx-user text-2xl pr-1"></i>
                         <input type="text" class="w-full bg-transparent" placeholder="Enter Your Name" v-model="payload.name">
                     </div>
+                    <p class="text-xs" v-if="inputError.name"> {{ inputError.name }} </p>
                     <p class="">Email</p>
-                    <div class="flex flex-row justify-center border-b items-center w-full p-1">
+                    <div class="flex flex-row justify-center border-b items-center w-full p-1" :class="{'border-red-500': inputError.email}">
                         <i class="bx bx-envelope text-2xl pr-1"></i>
                         <input type="text" class="w-full bg-transparent" placeholder="Enter Your Email" v-model="payload.email">
                     </div>
+                    <p class="text-xs" v-if="inputError.email"> {{ inputError.email }} </p>
                     <p class="">Password</p>
-                    <div class="flex flex-row justify-center border-b items-center w-full p-1">
+                    <div class="flex flex-row justify-center border-b items-center w-full p-1" :class="{'border-red-500': inputError.password}">
                         <i class="bx bx-lock text-2xl pr-1"></i>
                         <input type="password" class="w-full bg-transparent" placeholder="Enter Your Password" v-model="payload.password">
                     </div>
+                    <p class="text-xs" v-if="inputError.password"> {{ inputError.password }} </p>
+                    <p class="text-xs" v-if="errorRegister"> {{errorRegister}} </p>
                 </div>
-                <button class="disabled:cursor-not-allowed flex justify-center items-center w-full hover:bg-primary bg-secondary duration-150 rounded-sm text-white p-2" type="submit" @submit.prevent="handleRegister" :disabled="pendingRegister || !payload.email || !payload.email || !payload.password">
+                <button class="disabled:cursor-not-allowed flex justify-center items-center w-full hover:bg-primary bg-secondary duration-150 rounded-sm text-white p-2" type="submit" @submit.prevent="handleRegister" :disabled="pendingRegister || !payload.name || !payload.email || !payload.password">
                     <i v-if="pendingRegister" class='bx bx-loader-alt bx-spin' ></i>
                     <p v-else>
                         Register
@@ -44,24 +48,28 @@ const payload = ref({
 const user = useUser();
 
 const pendingRegister = ref(false);
-const errorRegister = ref(false)
+const inputError = ref({});
+const errorRegister = ref(false);
 
 const handleRegister = async () => {
     if (pendingRegister.value || !payload.value.email || !payload.value.password) return;
 
+    inputError.value = {}
+    errorRegister.value = null;
     pendingRegister.value = true;
 
     const {data, pending, error} = await register({...payload.value});
 
     pendingRegister.value = pending.value
-    errorRegister.value = error.value
 
     if (error.value) {
-        console.log(error.value);
+        if (error.value.statusCode === 400) {
+            inputError.value = error.value.data.data;
+            return;
+        }
+        errorRegister.value = error.value.data.message
         return;
     }
-
-    user.$patch({...data.value});
 
     return await navigateTo("/login")
 }

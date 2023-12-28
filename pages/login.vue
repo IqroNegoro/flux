@@ -8,15 +8,18 @@
                 <h1 class="tracking-wider text-2xl text-primary text-center">Login</h1>
                 <div class="flex flex-col gap-2 w-full">
                     <p class="">Email</p>
-                    <div class="flex flex-row justify-center border-b items-center w-full p-1">
+                    <div class="flex flex-row justify-center border-b items-center w-full p-1" :class="{'border-red-500': inputError.email}">
                         <i class="bx bx-envelope text-2xl pr-1"></i>
                         <input type="text" class="w-full bg-transparent" placeholder="Enter Your Email" v-model="payload.email">
                     </div>
+                    <p class="text-xs" v-if="inputError.email"> {{ inputError.email }} </p>
                     <p class="">Password</p>
-                    <div class="flex flex-row justify-center border-b items-center w-full p-1">
+                    <div class="flex flex-row justify-center border-b items-center w-full p-1" :class="{'border-red-500': inputError.password}">
                         <i class="bx bx-lock text-2xl pr-1"></i>
                         <input type="password" class="w-full bg-transparent" placeholder="Enter Your Password" v-model="payload.password">
                     </div>
+                    <p class="text-xs" v-if="inputError.password"> {{ inputError.password }} </p>
+                    <p class="text-xs" v-if="errorLogin"> {{errorLogin}} </p>
                 </div>
                 <button class="disabled:cursor-not-allowed flex justify-center items-center w-full hover:bg-primary bg-secondary duration-150 rounded-sm text-white p-2" type="submit" @submit.prevent="handleLogin" :disabled="pendingLogin || !payload.email || !payload.password">
                     <i v-if="pendingLogin" class='bx bx-loader-alt bx-spin' ></i>
@@ -37,20 +40,24 @@ const payload = ref({
 const user = useUser();
 
 const pendingLogin = ref(false);
-const errorLogin = ref(false)
+const inputError = ref({});
+const errorLogin = ref(null);
 
 const handleLogin = async () => {
     if (pendingLogin.value || !payload.value.email || !payload.value.password) return;
-
+    inputError.value = {};
+    errorLogin.value = null;
     pendingLogin.value = true;
 
-    const {data, pending, error} = await login({
-        ...payload.value
-    });
+    const {data, pending, error} = await login({...payload.value});
     pendingLogin.value = pending.value
-    errorLogin.value = error.value
 
     if (error.value) {
+        if (error.value.statusCode === 400) {
+            inputError.value = error.value.data.data;
+            return;
+        }
+        errorLogin.value = error.value.data.message
         return;
     }
 

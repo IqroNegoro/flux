@@ -3,7 +3,7 @@ import prisma from "../db";
 
 export default defineEventHandler(async e => {
     try {
-        console.log(getRequestURL(e))
+        console.log(getRequestURL(e).pathname)
         if (e.path.search(/login|register/gi) >= 0) return;
     
         const {token, refresh} = parseCookies(e);

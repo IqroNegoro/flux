@@ -1,16 +1,22 @@
 import prisma from "../db";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import bodyValidator from "../validator"
+
 export default defineEventHandler(async e => {
     try {
-        const {email, password} = await readBody(e);
-        
-        if (!email || !password) {
+        const body = await readBody(e);
+        console.log(body)
+        const validating = bodyValidator(body).isEmail("email", "Fill correct email!").isEmpty("password", "Password cannot be empty")
+
+        if (validating.hasErr()) {
             throw createError({
                 statusCode: 400,
-                message: "Email or password cannot empty"
+                data: validating.result
             });
         }
+
+        const { email, password } = validating.result
 
         const user = await prisma.users.findUnique({
             where: {
@@ -67,7 +73,8 @@ export default defineEventHandler(async e => {
         console.log(error)
         return createError({
             statusCode: error.statusCode || 500,
-            message: error.message || "Something went wrong"
+            message: error.message || "Something went wrong",
+            data: error.data || {}
         });
     }
 })
