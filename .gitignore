@@ -24,4 +24,3 @@ logs
 !.env.example
 
 prisma/migrations
-validator
