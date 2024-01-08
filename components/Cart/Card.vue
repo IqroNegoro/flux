@@ -1,9 +1,12 @@
 <template>
-    <div class="flex flex-row gap-4">
-        <img :src="cart.product?.image" alt="" class="w-24 object-contain">
-        <div class="flex flex-col justify-between gap-4 items-start w-full">
+    <div class="flex flex-row gap-4 w-full relative">
+        <button class="absolute top-0 right-0">
+            <i class="bx bx-x"></i>
+        </button>
+        <img :src="cart.product?.image" alt="" class="aspect-square w-32 object-cover rounded-md">
+        <div class="flex flex-col justify-between items-start w-full">
             <div>
-                <p class="font-medium text-xl">
+                <p class="font-medium text-lg">
                     {{ cart.product?.name }}
                 </p>
                 <p>
@@ -29,17 +32,17 @@ const { data: dec, pending: pendingDec, error: errorDec, execute: executeDec} = 
 
 const handleDelCart = async () => {
     await execute();
-    if (error.value) {
-        console.log(error.value.data)
-    }
+    // if (error.value) {
+    //     console.log(error.value.data)
+    // }
     emit("deleteCart", data.value.id);
 }
 
 const handleInc = async () => {
     await executeInc();
-    if (errorInc.value) {
-        console.log(errorInc.value);
-    }
+    // if (errorInc.value) {
+    //     console.log(errorInc.value);
+    // }
     cart.quantity = inc.value.quantity;
 }
 
@@ -48,9 +51,9 @@ const handleDec = async () => {
         return await handleDelCart();
     }
     await executeDec();
-    if (errorDec.value) {
-        console.log(errorDec.value);
-    }
+    // if (errorDec.value) {
+    //     console.log(errorDec.value);
+    // }
     cart.quantity = dec.value.quantity;
 }
 

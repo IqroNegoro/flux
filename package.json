@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "nuxt": "^3.9.0",
+    "nuxt3-leaflet": "^1.0.12",
     "vue": "^3.4.5",
     "vue-router": "^4.2.5"
   },

@@ -1,6 +1,5 @@
 <template>
     <div class="flex justify-center flex-row p-4" v-if="product">
-        <!-- {{ product }} -->
         <div class="w-full flex justify-center items-center">
             <img :src="product.image" :alt="product.name" class="w-3/4 rounded-md">
         </div>
@@ -26,11 +25,11 @@ const { data: cart, pending: cartPending, error: errorCart, execute: executeCart
 cartPending.value = false;
 
 useHead({
-    title: `${product.value?.name} | Flux`
+    title: () => `${product.value?.name} | Flux`
 });
 
 useSeoMeta({
-    title: `${product.value?.name} | Flux`,
-    ogImage: product.value?.image
+    title: () => `${product.value?.name} | Flux`,
+    ogImage: () => product.value?.image
 })
 </script>
