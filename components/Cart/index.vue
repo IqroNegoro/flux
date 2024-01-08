@@ -1,0 +1,59 @@
+<template>
+    <div class="fixed top-0 left-0 w-full h-full bg-black/25 flex justify-end items-center" @click.self="cart = false">
+        <div class="bg-white w-96 h-full p-4 overflow-y-scroll">
+            <div class="flex">
+                <button class="hover:bg-black/10 flex justify-center items-center px-1 rounded-full" @click="cart = false"><i class="bx bx-x text-2xl"></i></button>
+            </div>
+            <p class="text-3xl mb-4">Carts</p>
+            <div class="flex flex-col gap-6">
+                <div v-if="error && !pending" class="flex flex-col justify-center items-center gap-4">
+                    <p>Oops something wrong, try again</p>
+                    <button class="rounded-md border border-primary px-3 py-1 font-medium hover:bg-primary transition-all hover:text-white duration-150" @click="refresh">
+                        Try again
+                    </button>
+                </div>
+                <div v-else-if="!data.length && !pending" class="flex flex-col justify-center items-center">
+                    <i class="bx bx-cart-alt text-5xl"></i>                    
+                    <p>
+                        Carts is empty
+                    </p>
+                </div>
+                <template v-else>
+                    <CartCard v-for="cart in cartLists" :key="cart.id" :cart="cart" @delete-cart="id => cartLists = cartLists.filter(v => v.id != id)" />
+                </template>
+                <div ref="fetchPoint"></div>
+                <template v-if="data.length >= limit || pending">
+                    <CartSkeleton v-for="i in 5" :key="i" />
+                </template>
+            </div>
+        </div>
+    </div>
+</template>
+<script setup>
+const cart = useCart();
+const limit = ref(10);
+const skip = ref(0);
+const fetchPoint = ref(undefined);
+const cartLists = ref([]);
+
+const { data, pending, error, refresh } = await getCarts({
+    params: {
+        limit,
+        skip
+    }
+});
+
+
+watch(data, data => {
+    console.log(data)
+    cartLists.value = [...cartLists.value, ...data]
+});
+
+onMounted(() => {
+    useScroll(fetchPoint.value, () => {
+        if (!pending.value && data.value.length >= limit.value) {
+            skip.value += limit.value
+        }
+    });
+});
+</script>

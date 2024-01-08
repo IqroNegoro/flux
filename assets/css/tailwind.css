@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@400;500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    * {
+        @apply outline-none overscroll-contain
+    }
+
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    ::-webkit-scrollbar, ::-webkit-scrollbar-track, ::-webkit-scrollbar-track-piece {
+        @apply bg-transparent w-1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-primary
+    }
+
+    input, div[contenteditable] {
+        @apply bg-black/10 rounded-sm p-2
+    }
+
+    html {
+        font-family: 'Open Sans', 'Roboto', sans-serif;        
+    }
+
+    [contenteditable][placeholder]:empty:before {
+        content: attr(placeholder);
+        position: absolute;
+        color: gray;
+    }
+
+    select {
+        appearance: none;
+        box-shadow: none;
+        display: none;
+    }
+
+    th, td {
+        @apply p-2
+    }
+}
+
+@layer components {
+    .hover {
+        @apply bg-secondary hover:bg-primary transition-colors duration-150
+    }
+
+    .skeleton {
+        @apply bg-black/25 animate-pulse rounded-full
+    }
+}
