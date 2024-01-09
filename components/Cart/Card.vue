@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-row gap-4 w-full relative">
-        <button class="absolute top-0 right-0">
+        <button class="absolute top-0 right-0" @click="handleDelCart">
             <i class="bx bx-x"></i>
         </button>
         <img :src="cart.product?.image" alt="" class="aspect-square w-32 object-cover rounded-md">
@@ -10,7 +10,7 @@
                     {{ cart.product?.name }}
                 </p>
                 <p>
-                    {{ cart.product.description }}
+                    {{ cart.product?.description }}
                 </p>
             </div>
             <span class="text-sm text-gray-500">{{formatRp(cart.product?.price)}}</span>

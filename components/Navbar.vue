@@ -8,7 +8,7 @@
                 </button>
                 <input type="text" class="bg-transparent">
             </form>
-            <button @click="cart = true">
+            <button @click="cart.handleState">
                 <i class="bx bxs-cart text-2xl text-primary"></i>
             </button>
             <div class="flex flex-row justify-center items-center gap-2 border-l pl-3" v-if="!user.authenticated">

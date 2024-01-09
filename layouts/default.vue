@@ -3,8 +3,8 @@
         <Navbar />
         <slot />
     </div>
-    <Cart v-if="user.authenticated && cart" />
-    <Login v-if="!user.authenticated && cart" />
+    <Cart v-if="user.authenticated && cart.open" />
+    <Login v-if="!user.authenticated && cart.open" />
 </template>
 <script setup>
 const user = useUser();

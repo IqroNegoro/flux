@@ -4,6 +4,8 @@
     <NuxtPage />
   </NuxtLayout>
 </template>
+<script setup>
+</script>
 <style>
 .pop-down-enter-active,
 .pop-down-leave-active {

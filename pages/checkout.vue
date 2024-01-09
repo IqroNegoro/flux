@@ -4,7 +4,7 @@
         <p class="text-xl"> Make sure nothing left </p>
         <div class="w-full flex justify-center flex-row items-center gap-8 divide-y divide-gray-200">
             <div class="w-full flex flex-col gap-4">
-                <CartCard v-for="cart in carts" :key="cart.id" :cart="cart" />
+                <CartCard v-for="cart in cart.carts" :key="cart.id" :cart="cart" />
             </div>
             <div class="w-3/4 h-96 p-12 flex flex-col bg-gray-200 rounded-md">
                 <h1 class="text-xl font-medium">Order Summary</h1>
@@ -23,7 +23,7 @@
     </div>
 </template>
 <script setup>
-
+const cart = useCart();
 const { data: carts, pending, error, refresh } = await getCarts();
 
 useHead({

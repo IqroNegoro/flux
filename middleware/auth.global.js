@@ -15,7 +15,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
             ...data.value,
             authenticated: true
         });
-
         if (to.name == "login" || to.name == "register") return await navigateTo("/");
     }
 });

@@ -13,7 +13,7 @@ export const getProduct = async id => await useApi(`products/${id}`, {
 export const getCarts = async options => await useApi("carts", {
     ...options,
     default: () => [],
-    lazy: true,
+    // lazy: true,
     key: `get-carts`
 });
 
