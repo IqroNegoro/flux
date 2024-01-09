@@ -19,7 +19,7 @@
                     </p>
                 </div>
                 <template v-else>
-                    <CartCard v-for="cart in cartLists" :key="cart.id" :cart="cart" @delete-cart="id => cartLists = cartLists.filter(v => v.id != id)" />
+                    <CartCard v-for="cart in cartLists" :key="cart.id" :cart="cart" @qty="cart => cartLists.find(v => v.id == cart.id).quantity = cart.quantity" @delete-cart="id => cartLists = cartLists.filter(v => v.id != id)" />
                 </template>
                 <div ref="fetchPoint"></div>
                 <template v-if="data.length >= limit || pending">
@@ -45,7 +45,6 @@ const { data, pending, error, refresh } = await getCarts({
         skip
     }
 });
-
 
 watch(data, data => {
     console.log(data)

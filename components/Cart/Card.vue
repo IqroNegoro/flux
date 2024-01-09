@@ -1,7 +1,8 @@
 <template>
     <div class="flex flex-row gap-4 w-full relative">
-        <button class="absolute top-0 right-0">
-            <i class="bx bx-x"></i>
+        <button class="absolute top-0 right-0" @click="handleDelCart" :disabled="pending">
+            <i v-if="pending" class="bx bx-loader-alt bx-spin"></i>
+            <i v-else class="bx bx-x"></i>
         </button>
         <img :src="cart.product?.image" alt="" class="aspect-square w-32 object-cover rounded-md">
         <div class="flex flex-col justify-between items-start w-full">
@@ -10,25 +11,34 @@
                     {{ cart.product?.name }}
                 </p>
                 <p>
-                    {{ cart.product.description }}
+                    {{ cart.product?.description }}
                 </p>
             </div>
             <span class="text-sm text-gray-500">{{formatRp(cart.product?.price)}}</span>
             <div class="flex justify-between items-center w-full">
-                <button class="border border-primary px-2 rounded-sm font-bold" @click="handleDec">-</button>
+                <button class="border border-primary px-2 rounded-sm font-bold" @click="handleDec" :disabled="pending || pendingInc || pendingDec">
+                    <i v-if="pendingDec" class="bx bx-loader-alt bx-spin"></i>
+                    <i v-else class="bx bx-minus"></i>
+                </button>
                 {{ cart.quantity }}
-                <button class="border border-primary px-2 rounded-sm font-bold" @click="handleInc">+</button>
+                <button class="border border-primary px-2 rounded-sm font-bold" @click="handleInc" :disabled="pending || pendingInc || pendingDec">
+                    <i v-if="pendingInc" class="bx bx-loader-alt bx-spin"></i>
+                    <i v-else class="bx bx-plus"></i>
+                </button>
             </div>
         </div>
     </div>
 </template>
 <script setup>
-const emit = defineEmits(["deleteCart"]);
+const emit = defineEmits(["deleteCart", "qty"]);
 const { cart } = defineProps(["cart"]);
 
 const { data, pending, error, execute } = await deleteCart(cart.id);
 const { data: inc, pending: pendingInc, error: errorInc, execute: executeInc} = await incQty(cart.id);
 const { data: dec, pending: pendingDec, error: errorDec, execute: executeDec} = await decQty(cart.id);
+pending.value = false;
+pendingInc.value = false;
+pendingDec.value = false;
 
 const handleDelCart = async () => {
     await execute();
@@ -39,22 +49,24 @@ const handleDelCart = async () => {
 }
 
 const handleInc = async () => {
+    console.trace(cart.quantity, "increment")
     await executeInc();
     // if (errorInc.value) {
-    //     console.log(errorInc.value);
+    //     console.trace(errorInc.value);
     // }
-    cart.quantity = inc.value.quantity;
+    emit("qty", inc.value);
 }
 
 const handleDec = async () => {
+    console.trace(cart.quantity, "decrement")
     if (cart.quantity == 1) {
         return await handleDelCart();
     }
     await executeDec();
     // if (errorDec.value) {
-    //     console.log(errorDec.value);
-    // }
-    cart.quantity = dec.value.quantity;
+        //     console.trace(errorDec.value);
+        // }
+    emit("qty", dec.value);
 }
 
 </script>

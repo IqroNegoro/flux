@@ -11,6 +11,10 @@ export default defineEventHandler(async e => {
             quantity: {
                 increment: 1
             }
+        },
+        select: {
+            id: true,
+            quantity: true
         }
     });
     

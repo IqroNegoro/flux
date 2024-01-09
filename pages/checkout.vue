@@ -2,9 +2,9 @@
     <div class="flex justify-center items-center flex-col gap-2 p-4 w-3/4 mx-auto">
         <h1 class="font-bold text-4xl">Shopping Cart</h1>
         <p class="text-xl"> Make sure nothing left </p>
-        <div class="w-full flex justify-center flex-row items-center gap-8 divide-y divide-gray-200">
+        <div class="w-full flex justify-center flex-row items-start gap-8 divide-y divide-gray-200">
             <div class="w-full flex flex-col gap-4">
-                <CartCard v-for="cart in carts" :key="cart.id" :cart="cart" />
+                <CartCard v-for="cart in carts" :key="cart.id" :cart="cart" @qty="cart => carts.find(v => v.id == cart.id).quantity = cart.quantity" @delete-cart="id => carts = carts.filter(v => v.id != id)" />
             </div>
             <div class="w-3/4 h-96 p-12 flex flex-col bg-gray-200 rounded-md">
                 <h1 class="text-xl font-medium">Order Summary</h1>
@@ -12,7 +12,7 @@
                     <tbody>
                         <tr>
                             <td>Subtotal</td>
-                            <td>{{formatRp(9999999)}}</td>
+                            <td>{{formatRp(total)}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -25,6 +25,7 @@
 <script setup>
 
 const { data: carts, pending, error, refresh } = await getCarts();
+const total = computed(() => carts.value.reduce((prev, next) => prev + (next.product.price * next.quantity),0))
 
 useHead({
     title: "Checkout | Flux"
