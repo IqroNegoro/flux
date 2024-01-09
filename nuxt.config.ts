@@ -4,8 +4,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     secret: process.env.JWT_SECRET,
     refresh: process.env.JWT_REFRESH_SECRET,
-    bot: process.env.BOT_TOKEN,
-    channelId: process.env.CHANNEL_ID
+    clientKey: process.env.MIDTRANS_CLIENT_KEY,
+    serverKey: process.env.MIDTRANS_SERVER_KEY,
   },
   modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt"],
   app: {
