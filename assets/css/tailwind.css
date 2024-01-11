@@ -39,14 +39,12 @@
         color: gray;
     }
 
-    select {
-        appearance: none;
-        box-shadow: none;
-        display: none;
-    }
-
     th, td {
         @apply p-2
+    }
+
+    input[type=radio] {
+        @apply accent-primary p-1
     }
 }
 

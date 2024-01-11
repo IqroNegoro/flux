@@ -6,9 +6,9 @@ export default defineEventHandler(async e => {
    
     if (!isMongoId(id)) throw createError({
         statusCode: 400,
-        message: "The ID is not MongoID",
+        message: "Invalid ID",
         data: {
-            id: "The ID is not MongoID"
+            id: "Invalid ID"
         }
     });
 

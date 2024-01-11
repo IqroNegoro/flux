@@ -16,13 +16,9 @@
                 </LMap> -->
               <!-- </ClientOnly> -->
         </div>
-        <button @click="test">test</button>
     </div>
 </template>
 <script setup>
-const test = async () => await useApi("orders", {
-  method: "POST"
-})
 const user = useUser();
 const { data: products, pending, error, refresh } = await getProducts();
 useHead({

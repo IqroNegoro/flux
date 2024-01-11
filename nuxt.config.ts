@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     refresh: process.env.JWT_REFRESH_SECRET,
     clientKey: process.env.MIDTRANS_CLIENT_KEY,
     serverKey: process.env.MIDTRANS_SERVER_KEY,
+    rajaOngkirKey: process.env.RAJA_ONGKIR_KEY
   },
   modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt"],
   app: {

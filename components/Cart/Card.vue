@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-row gap-4 w-full relative">
-        <button class="absolute top-0 right-0" @click="handleDelCart" :disabled="pending">
+    <div class="flex flex-row gap-4 p-2 w-full relative cursor-pointer rounded-md" :class="{'bg-gray-100': checkout.has(cart.id)}" @click="checkout.addToCheckout(cart)">
+        <button class="absolute top-0 right-1" @click.stop="handleDelCart" :disabled="pending">
             <i v-if="pending" class="bx bx-loader-alt bx-spin"></i>
             <i v-else class="bx bx-x"></i>
         </button>
@@ -16,12 +16,12 @@
             </div>
             <span class="text-sm text-gray-500">{{formatRp(cart.product?.price)}}</span>
             <div class="flex justify-between items-center w-full">
-                <button class="border border-primary px-2 rounded-sm font-bold" @click="handleDec" :disabled="pending || pendingInc || pendingDec">
+                <button class="border border-primary px-2 rounded-sm font-bold" @click.stop="handleDec" :disabled="pending || pendingInc || pendingDec">
                     <i v-if="pendingDec" class="bx bx-loader-alt bx-spin"></i>
                     <i v-else class="bx bx-minus"></i>
                 </button>
                 {{ cart.quantity }}
-                <button class="border border-primary px-2 rounded-sm font-bold" @click="handleInc" :disabled="pending || pendingInc || pendingDec">
+                <button class="border border-primary px-2 rounded-sm font-bold" @click.stop="handleInc" :disabled="pending || pendingInc || pendingDec">
                     <i v-if="pendingInc" class="bx bx-loader-alt bx-spin"></i>
                     <i v-else class="bx bx-plus"></i>
                 </button>
@@ -30,6 +30,8 @@
     </div>
 </template>
 <script setup>
+const user = useUser();
+const checkout = useCheckout();
 const emit = defineEmits(["deleteCart", "qty"]);
 const { cart } = defineProps(["cart"]);
 
@@ -45,6 +47,7 @@ const handleDelCart = async () => {
     // if (error.value) {
     //     console.log(error.value.data)
     // }
+    checkout.delete(data.value.id);
     emit("deleteCart", data.value.id);
 }
 
@@ -54,6 +57,7 @@ const handleInc = async () => {
     // if (errorInc.value) {
     //     console.trace(errorInc.value);
     // }
+    checkout.qty(inc.value);
     emit("qty", inc.value);
 }
 
@@ -66,6 +70,7 @@ const handleDec = async () => {
     // if (errorDec.value) {
         //     console.trace(errorDec.value);
         // }
+    checkout.qty(dec.value);
     emit("qty", dec.value);
 }
 

@@ -18,7 +18,7 @@ model users {
   tokens tokens?
   carts carts[]
   transactions transactions[]
-  orders orders[]
+  // orders orders[]
   roles Roles @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -28,11 +28,12 @@ model products {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   image String
+  available Boolean @default(false)
   stock Int? @default(0)
   price Int? @default(0)
   description String?
   carts carts[]
-  orders orders[]
+  // orders orders[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
@@ -50,24 +51,24 @@ model carts {
   @@unique([productId, userId])
 }
 
-model orders {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  productId String @db.ObjectId
-  product products @relation(fields: [productId], references: [id])
-  userId String @db.ObjectId
-  user users @relation(fields: [userId], references: [id])
-  transactionsId String @db.ObjectId
-  transactions transactions @relation(fields: [transactionsId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-}
+// model orders {
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   userId String @db.ObjectId
+//   user users @relation(fields: [userId], references: [id])
+//   transactionsId String @db.ObjectId
+//   transactions transactions @relation(fields: [transactionsId], references: [id])
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @default(now())
+// }
 
 model transactions {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  orderId String  @db.ObjectId
-  order orders[]
+  // orderId String  @db.ObjectId
+  // order orders[]
+  orderId String
   userId String @db.ObjectId
   user users @relation(fields: [userId], references: [id])
+  products ProductsTransaction[]
   total Int
   status Status @default(CREATED)
   method String
@@ -97,4 +98,13 @@ enum Status {
   CREATED
   PENDING
   SUCCESS
+}
+
+type ProductsTransaction {
+  id String @map("_id") @db.ObjectId
+  image String
+  name String
+  price Int @default(0)
+  quantity Int @default(0)
+  description String?
 }

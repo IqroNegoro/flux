@@ -20,8 +20,8 @@ export default defineEventHandler(async e => {
                 token: refresh
             }
         });
-
-        if (userToken && userToken.expired >= +new Date()) {
+        console.log(`user`, userToken, `is expired ?`, userToken?.expired >= + new Date());
+        if (userToken && userToken?.expired >= +new Date()) {
             user = await prisma.users.findUnique({
                 where: {
                     id: userToken.userId
@@ -53,23 +53,28 @@ export default defineEventHandler(async e => {
                     token: refresh,
                     expired: new Date(Date.now() + (1000 * 60 * 60 * 24))
                 }
-            })
+            });
+
+            console.log("new refresh token invoked", saving)
         
             setCookie(e, "token", token, {
                 maxAge: 60 * 15,
                 httpOnly: true,
-                secure: true
+                secure: true,
+                sameSite: "none"
             });
             
             setCookie(e, "refresh", refresh, {
                 maxAge: 60 * 60 * 24,
                 httpOnly: true,
-                secure: true
+                secure: true,
+                sameSite: "none"
             });
+            console.log("cooke set!")
         }
     }
 
     // if (!user) throw createError({statusCode: 401, message: "Unauthenticated"});
-    
+    console.log("lanjut")
     e.context.auth = user;
 });

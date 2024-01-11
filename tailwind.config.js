@@ -16,17 +16,29 @@ module.exports = {
   theme: {
     extend: {
       backgroundColor: {
-        "primary": "#6ddf97",
-        "secondary": "#A1EEBD"
+        "primary": "#0F172A",
+        "secondary": "#1f3056"
       },
       colors: {
-        "primary": "#6ddf97",
-        "secondary": "#A1EEBD"
+        "primary": "#0F172A",
+        "secondary": "#1f3056"
       },
       textColor: {
-        "primary": "#6ddf97",
-        "secondary": "#A1EEBD"
+        "primary": "#0F172A",
+        "secondary": "#1f3056"
       }
+      // backgroundColor: {
+      //   "primary": "#6ddf97",
+      //   "secondary": "#A1EEBD"
+      // },
+      // colors: {
+      //   "primary": "#6ddf97",
+      //   "secondary": "#A1EEBD"
+      // },
+      // textColor: {
+      //   "primary": "#6ddf97",
+      //   "secondary": "#A1EEBD"
+      // }
     },
   },
   plugins: [],
