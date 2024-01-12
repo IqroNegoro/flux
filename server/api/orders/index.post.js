@@ -3,8 +3,7 @@ import {v4} from "uuid";
 
 export default defineEventHandler(async e => {
     const data = await readBody(e);
-    console.log(data);
-    return {}
+
     const products = data.items.map(v => v.product?.id);
 
     const item_details = await prisma.products.findMany({
@@ -57,18 +56,26 @@ export default defineEventHandler(async e => {
     parameter.customer_details = {
         email: e.context.auth.email,
         first_name: e.context.auth.name,
-        phone: "08978405369"
+        phone: data.shipping_address.phone,
+        address: data.shipping_address.address,
+        shipping_address: {...data.shipping_address}
     }
 
     parameter.item_details = item_details.map((v, i) => ({...v, quantity: data.items[i].quantity}))
+    
+    parameter.custom_expiry = {
+        expiry_duration: 1,
+        unit: "day"
+    }
 
     console.log(parameter)
+
     return midtrans().charge(parameter).then(async res => {
         console.log(res);
         const order = await prisma.transactions.create({
             data: {
                 orderId: res.order_id,
-                products: item_details,
+                products: parameter.item_details,
                 userId: e.context.auth.id,
                 total: parseInt(res.gross_amount),
                 method: res.payment_type,
@@ -81,11 +88,11 @@ export default defineEventHandler(async e => {
             message: "Order created",
             data: order.id,
         }
-    }).catch(res => {
+    }).catch(({ApiResponse}) => {
         return createError({
-            statusCode: 500,
-            message: "Something went wrong",
-            data: res
+            statusCode: ApiResponse.status_code || 500,
+            message: ApiResponse.status_message || "Something went wrong",
+            data: ApiResponse
         });
     })
 })

@@ -1,9 +1,15 @@
 <template>
   <NuxtLayout>
+    <Transition name="pop-down">
+      <Notification v-if="notification.notification" />
+    </Transition>
     <NuxtLoadingIndicator />
     <NuxtPage />
   </NuxtLayout>
 </template>
+<script setup>
+const notification = useNotification();
+</script>
 <style>
 .pop-down-enter-active,
 .pop-down-leave-active {

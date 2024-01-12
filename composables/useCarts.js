@@ -35,11 +35,3 @@ export const getProductsCart = async id => await useApi(`checkout/${id}`, {
     default: () => [],
     key: 'get-products-cart'
 });
-
-export const createOrder = async body => await useApi(`orders`, {
-    method: "POST",
-    lazy: true,
-    default: () => {},
-    body,
-    key: "create-order"
-});

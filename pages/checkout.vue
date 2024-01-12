@@ -94,9 +94,9 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <h1 class="text-xl font-medium">Shipping Address</h1>
-                    <input type="text" placeholder="Name" class="disabled:text-gray-500 font-medium border border-primary" v-model="shipping_address.first_name" :disabled="user.name">
-                    <input type="text" placeholder="Email" class="disabled:text-gray-500 font-medium border border-primary" v-model="shipping_address.email" :disabled="user.email">
-                    <input type="number" placeholder="Phone" class="font-medium border border-primary" v-model="shipping_address.phone">
+                    <input type="text" placeholder="Name" class="disabled:text-gray-500 font-medium border border-primary" v-model="shipping_address.first_name">
+                    <input type="text" placeholder="Email" class="disabled:text-gray-500 font-medium border border-primary" v-model="shipping_address.email">
+                    <input type="tel" placeholder="Phone" class="font-medium border border-primary" v-model="shipping_address.phone">
                     <div class="w-full relative group">
                         <button class="w-full border border-primary font-medium text-left p-2" @click="!provinces.length ? executeProvince() : null">{{ shipping_province?.province || "Choose Province" }}</button>
                         <div class="hidden z-10 group-focus-within:flex w-full absolute top-full left-0 flex-col border border-primary bg-white h-48 overflow-y-auto" :class="{'justify-center items-center': pendingProvince}">
@@ -107,29 +107,35 @@
                         </div>
                     </div>
                     <div class="w-full relative" :class="{'group': shipping_province}">
-                        <button class="w-full border border-primary font-medium text-left p-2">{{ shipping_address.city?.city_name || "Choose City" }}</button>
+                        <button class="w-full border border-primary font-medium text-left p-2">{{ shipping_address.city ? `${shipping_address.city?.type} ${shipping_address.city?.city_name}` : "Choose City" }}</button>
                         <div class="hidden z-10 group-focus-within:flex w-full absolute top-full left-0 flex-col border border-primary bg-white h-48 overflow-y-auto" :class="{'justify-center items-center': pendingCity}">
                             <i v-if="pendingCity" class="bx bx-loader-alt bx-spin text-5xl"></i>
                             <template v-else>
-                                <button v-for="city in cities" class="text-left p-2 font-medium hover:bg-primary hover:text-white duration-75 transition-colors" :class="{'bg-primary text-white': shipping_address.city.city_id == city.city_id}" :key="city.city_id" @click="shipping_address.city = city">{{ city.city_name }}</button>
+                                <button v-for="city in cities" class="text-left p-2 font-medium hover:bg-primary hover:text-white duration-75 transition-colors" :class="{'bg-primary text-white': shipping_address.city.city_id == city.city_id}" :key="city.city_id" @click="shipping_address.city = city">{{ `${city.type} ${city.city_name}` }}</button>
                             </template>
                         </div>
                     </div>
                     <input type="number" placeholder="Postal Code" class="font-medium border border-primary" v-model="shipping_address.postal_code">
+                    <input type="text" placeholder="Detail Address" class="font-medium border border-primary" v-model="shipping_address.address">
                 </div>
             </div>
         </div>
         <div class="w-full p-4 flex flex-col gap-4">
+           
         </div>
     </div>
 </template>
 <script setup>
 const user = useUser();
 const checkout = useCheckout();
+const notification = useNotification();
+
 const payment_type = ref("bank_transfer");
 const payment_provider = ref("");
+
 const pending = ref(false);
 const err = ref(false);
+
 const total = computed(() => checkout.checkout.reduce((prev, next) => prev + (next.product?.price * next.quantity),0));
 
 const shipping_province = ref("");
@@ -158,6 +164,10 @@ const { data: cities, pending: pendingCity } = await useFetch("/api/city", {
     key: "get-city"
 });
 
+watch(shipping_province, val => {
+    shipping_address.value.city = "";
+});
+
 const handleCreateOrder = async () => {
     pending.value = true;
 
@@ -166,22 +176,25 @@ const handleCreateOrder = async () => {
         payment_provider: payment_provider.value,
         items: checkout.checkout,
         total: total.value,
+        address: shipping_address.value.address,
         shipping_address: {
             ...shipping_address.value,
-            province: shipping_province.value.province_name
+            province: shipping_province.value.province,
+            city: shipping_address.value.city.city_name,
         }
     });
 
     pending.value = false;
     
     if (error.value) {
+        notification.error("Error creating your order, try again")
         console.log(error.value);
         return;
     }
 
-    console.log(data.value, error.value);
+    notification.success("Order created");
 
-    // return await navigateTo({name: "orders-id", params: {id: data.value.data}})
+    return await navigateTo({name: "orders-id", params: {id: data.value.data}})
     
 }
 

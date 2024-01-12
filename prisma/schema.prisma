@@ -65,7 +65,7 @@ model transactions {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   // orderId String  @db.ObjectId
   // order orders[]
-  orderId String
+  orderId String @unique
   userId String @db.ObjectId
   user users @relation(fields: [userId], references: [id])
   products ProductsTransaction[]
