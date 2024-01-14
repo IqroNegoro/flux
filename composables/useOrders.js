@@ -1,3 +1,9 @@
+export const getOrders = async () => await useApi(`orders`, {
+    lazy: true,
+    default: () => [],
+    key: "get-orders"
+});
+
 export const createOrder = async body => await useApi(`orders`, {
     method: "POST",
     lazy: true,

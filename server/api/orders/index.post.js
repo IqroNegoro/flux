@@ -80,7 +80,8 @@ export default defineEventHandler(async e => {
                 total: parseInt(res.gross_amount),
                 method: res.payment_type,
                 paymentStatus: res.transaction_status,
-                midtransResponse: res
+                midtransResponse: res,
+                shippingAddress: data.shipping_address
             }
         });
         setResponseHeaders(e, 201);
@@ -89,10 +90,19 @@ export default defineEventHandler(async e => {
             data: order.id,
         }
     }).catch(({ApiResponse}) => {
+        console.log(ApiResponse)
+        let error = null;
+        if (ApiResponse.status_code == 505 || ApiResponse.status_code == 503) {
+            error = {
+                type: "payment_provider",
+                message: "Cannot create order with this payment provider, please choose another"
+            }
+        };
+
         return createError({
             statusCode: ApiResponse.status_code || 500,
             message: ApiResponse.status_message || "Something went wrong",
-            data: ApiResponse
+            data: error
         });
     })
 })

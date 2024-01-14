@@ -8,9 +8,15 @@
                 </button>
                 <input type="text" class="bg-transparent">
             </form>
-            <button @click="cart = true">
+            <button @click="unauthenticated = true">
                 <i class="bx bxs-cart text-2xl text-primary"></i>
             </button>
+            <button v-if="!user.authenticated" @click="unauthenticated = true">
+                <i class="bx bx-package text-2xl text-primary"></i>
+            </button>
+            <NuxtLink v-else :to="{name: user.authenticated ? 'orders' : 'login'}">
+                <i class="bx bx-package text-2xl text-primary"></i>
+            </NuxtLink>
             <div class="max-md:hidden flex flex-row justify-center items-center gap-2 border-l pl-3" v-if="!user.authenticated">
                 <NuxtLink :to="{name: 'login'}" class="text-sm rounded-md border border-secondary flex justify-center items-center px-4 py-1 font-semibold text-primary"> Login </NuxtLink>
                 <NuxtLink :to="{name: 'register'}" class="text-sm rounded-md bg-primary flex justify-center items-center px-4 py-1 font-semibold text-white"> Register </NuxtLink>
@@ -24,5 +30,5 @@
 </template>
 <script setup>
 const user = useUser();
-const cart = useCart();
+const unauthenticated = useUnauthenticated();
 </script>

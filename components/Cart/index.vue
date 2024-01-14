@@ -1,8 +1,8 @@
 <template>
-    <div class="fixed top-0 left-0 w-full h-full bg-black/25 flex justify-end items-center" @click.self="cart = false">
+    <div class="fixed top-0 left-0 w-full h-full bg-black/25 flex justify-end items-center" @click.self="unauthenticated = false">
         <div class="bg-white w-full md:w-96 h-full py-2 px-3 pr-0 flex flex-col">
             <div class="flex">
-                <button class="hover:bg-black/10 flex justify-center items-center px-1 rounded-full" @click="cart = false"><i class="bx bx-x text-2xl"></i></button>
+                <button class="hover:bg-black/10 flex justify-center items-center px-1 rounded-full" @click="unauthenticated = false"><i class="bx bx-x text-2xl"></i></button>
             </div>
             <p class="text-3xl mb-4">Carts</p>
             <div class="relative flex flex-col gap-3 h-full pr-2 overflow-y-scroll">
@@ -31,7 +31,7 @@
             </div>
             <div class="w-full pr-2 pt-2">
                 <p class="text-center font-medium text-sm">Click the item want to checkout</p>
-                <NuxtLink :to="{name: 'checkout'}" @click="cart = false" :class="{'pointer-events-none bg-secondary': !checkout.checkout.length}" class="w-full block text-center font-medium text-white py-2 bg-primary transition-colors duration-150">
+                <NuxtLink :to="{name: 'checkout'}" @click="unauthenticated = false" :class="{'pointer-events-none bg-secondary': !checkout.checkout.length}" class="w-full block text-center font-medium text-white py-2 bg-primary transition-colors duration-150">
                     Checkout
                 </NuxtLink>
             </div>
@@ -40,7 +40,7 @@
 </template>
 <script setup>
 const user = useUser();
-const cart = useCart();
+const unauthenticated = useUnauthenticated();
 const checkout = useCheckout();
 const limit = ref(10);
 const skip = ref(0);

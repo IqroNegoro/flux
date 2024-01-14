@@ -135,6 +135,7 @@ const payment_provider = ref("");
 
 const pending = ref(false);
 const err = ref(false);
+const inputErr = ref(false);
 
 const total = computed(() => checkout.checkout.reduce((prev, next) => prev + (next.product?.price * next.quantity),0));
 
@@ -188,7 +189,11 @@ const handleCreateOrder = async () => {
     
     if (error.value) {
         notification.error("Error creating your order, try again")
+        if (error.value.statusCode === 400) {
+            inputErr.value = "Cannot create order with choosed payment, please use another payment provider"
+        }
         console.log(error.value);
+        err.value = error.value.data;
         return;
     }
 

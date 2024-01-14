@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black/25" @click.self="cart = false">
+    <div class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black/25" @click.self="unauthenticated = false">
         <div class="w-96 shadow-md rounded-md bg-white flex flex-col p-4">
             <form class="flex flex-col gap-6 justify-center items-center" @submit.prevent="handleLogin">
                 <h1 class="tracking-wider text-2xl text-primary text-center">Login</h1>
@@ -35,7 +35,7 @@ const payload = ref({
     password: "iqro"
 });
 const user = useUser();
-const cart = useCart();
+const unauthenticated = useUnauthenticated();
 
 const pendingLogin = ref(false);
 const inputError = ref({});
@@ -60,6 +60,6 @@ const handleLogin = async () => {
     }
     user.$patch({...data.value, authenticated: true});
 
-    cart.value = false;
+    unauthenticated.value = false;
 }
 </script>

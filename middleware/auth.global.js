@@ -4,10 +4,12 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     });
 
     const user = useUser();
+    const authRoutes = ["orders"];
 
     if (error.value) {
         user.$reset();
-        // if (to.name != "login" && from.name != "login") return await navigateTo("/login");
+
+        if (authRoutes.includes(to.name) || authRoutes(from.name)) return await navigateTo("/login");
     }
 
     if (data.value) {

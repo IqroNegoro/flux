@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import prisma from "../db";
+import prisma from "~/server/db";
 
 export default defineEventHandler(async e => {
     console.log(getRequestURL(e).pathname)
-    if (e.path.search(/login|register/gi) >= 0) return;
+    if (!(e.path.search(/api/gi) >= 0)) return;
 
     const {token, refresh} = parseCookies(e);
 

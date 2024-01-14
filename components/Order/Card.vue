@@ -3,11 +3,8 @@
         <img :src="product?.image" alt="" class="aspect-square w-32 object-cover rounded-md">
         <div class="flex flex-col justify-between items-start w-full">
             <div>
-                <p class="font-medium text-lg">
+                <p class="font-medium text-lg truncate">
                     {{ product?.name }}
-                </p>
-                <p>
-                    {{ product?.description }}
                 </p>
                 <p class="text-gray-500 text-sm">
                     x{{ product.quantity }}
