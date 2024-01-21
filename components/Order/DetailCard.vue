@@ -30,7 +30,7 @@
             </div>
             <div class="flex flex-row justify-between items-center">
                 <div class="flex flex-col gap-2 justify-center items-center">
-                    <div class="bg-primary p-2 rounded-md w-min">
+                    <div class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
                         <div class="rounded-full p-1 flex justify-center items-center bg-white">
                             <i class="bx bx-check"></i>
                         </div>
@@ -38,7 +38,7 @@
                     <p class="font-medium">Order Created</p>
                 </div>
                 <div class="flex flex-col gap-2 justify-center items-center">
-                    <div class="bg-primary p-2 rounded-md w-min">
+                    <div class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
                         <div class="rounded-full p-1 flex justify-center items-center bg-white">
                             <i class="bx bx-check-double"></i>
                         </div>
@@ -46,7 +46,7 @@
                     <p class="font-medium">Order Paided</p>
                 </div>
                 <div class="flex flex-col gap-2 justify-center items-center">
-                    <div class="bg-primary p-2 rounded-md w-min">
+                    <div class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
                         <div class="rounded-full p-1 flex justify-center items-center bg-white">
                             <i class="bx bx-package"></i>
                         </div>
@@ -54,7 +54,7 @@
                     <p class="font-medium">Order Processed</p>
                 </div>
                 <div class="flex flex-col gap-2 justify-center items-center">
-                    <div class="bg-primary p-2 rounded-md w-min">
+                    <div class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
                         <div class="rounded-full p-1 flex justify-center items-center bg-white">
                             <i class="bx bxs-ship"></i>
                         </div>

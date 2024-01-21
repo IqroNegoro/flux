@@ -8,7 +8,9 @@ export default defineNuxtConfig({
     serverKey: process.env.MIDTRANS_SERVER_KEY,
     rajaOngkirKey: process.env.RAJA_ONGKIR_KEY
   },
-  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt"],
+  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", ["@vee-validate/nuxt", {
+    autoImports: true
+  }]],
   app: {
     pageTransition: { name: 'page', mode: 'out-in', appear: true },
     head: {

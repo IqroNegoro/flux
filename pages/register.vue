@@ -8,26 +8,26 @@
                 <h1 class="tracking-wider text-2xl text-primary text-center">Register</h1>
                 <div class="flex flex-col gap-2 w-full">
                     <p class="">Name</p>
-                    <div class="flex flex-row justify-center border-b items-center w-full p-1" :class="{'border-red-500': inputError.name}">
+                    <div class="flex flex-row justify-center border-b items-center w-full p-1" :class="{'border-red-500': errors.name}">
                         <i class="bx bx-user text-2xl pr-1"></i>
-                        <input type="text" class="w-full bg-transparent" placeholder="Enter Your Name" v-model="payload.name">
+                        <input type="text" class="w-full bg-transparent" placeholder="Enter Your Name" v-model="name">
                     </div>
-                    <p class="text-xs" v-if="inputError.name"> {{ inputError.name }} </p>
+                    <p class="text-xs" v-if="errors.name"> {{ errors.name }} </p>
                     <p class="">Email</p>
-                    <div class="flex flex-row justify-center border-b items-center w-full p-1" :class="{'border-red-500': inputError.email}">
+                    <div class="flex flex-row justify-center border-b items-center w-full p-1" :class="{'border-red-500': errors.email}">
                         <i class="bx bx-envelope text-2xl pr-1"></i>
-                        <input type="text" class="w-full bg-transparent" placeholder="Enter Your Email" v-model="payload.email">
+                        <input type="text" class="w-full bg-transparent" placeholder="Enter Your Email" v-model="email">
                     </div>
-                    <p class="text-xs" v-if="inputError.email"> {{ inputError.email }} </p>
+                    <p class="text-xs" v-if="errors.email"> {{ errors.email }} </p>
                     <p class="">Password</p>
-                    <div class="flex flex-row justify-center border-b items-center w-full p-1" :class="{'border-red-500': inputError.password}">
+                    <div class="flex flex-row justify-center border-b items-center w-full p-1" :class="{'border-red-500': errors.password}">
                         <i class="bx bx-lock text-2xl pr-1"></i>
-                        <input type="password" class="w-full bg-transparent" placeholder="Enter Your Password" v-model="payload.password">
+                        <input type="password" class="w-full bg-transparent" placeholder="Enter Your Password" v-model="password">
                     </div>
-                    <p class="text-xs" v-if="inputError.password"> {{ inputError.password }} </p>
+                    <p class="text-xs" v-if="errors.password"> {{ errors.password }} </p>
                     <p class="text-xs" v-if="errorRegister"> {{errorRegister}} </p>
                 </div>
-                <button class="disabled:cursor-not-allowed flex justify-center items-center w-full hover:bg-primary bg-secondary duration-150 rounded-sm text-white p-2" type="submit" @submit.prevent="handleRegister" :disabled="pendingRegister || !payload.name || !payload.email || !payload.password">
+                <button class="disabled:cursor-not-allowed flex justify-center items-center w-full hover:bg-primary bg-secondary duration-150 rounded-sm text-white p-2" type="submit" @submit.prevent="handleRegister" :disabled="pendingRegister || !name || !email || !password">
                     <i v-if="pendingRegister" class='bx bx-loader-alt bx-spin' ></i>
                     <p v-else>
                         Register
@@ -39,32 +39,63 @@
     </div>
 </template>
 <script setup>
-const payload = ref({
-    name: "Iqro Negoro",
-    email: "iqronegoro0@gmail.com",
-    password: "iqro"
+import { toTypedSchema } from "@vee-validate/yup";
+import {object, string} from "yup";
+
+const { values, defineField, errors, setErrors, validate } = useForm({
+    validationSchema: toTypedSchema(object({
+        name: string().required(),
+        email: string().required().email(),
+        password: string().required()
+    }))
+})
+
+const [name, nameAttr] = defineField("name", {
+    validateOnBlur: false,
+    validateOnChange: false,
+    validateOnModelUpdate: false,
+    validateOnInput: false
 });
+
+const [email, emailAttr] = defineField("email", {
+    validateOnBlur: false,
+    validateOnChange: false,
+    validateOnModelUpdate: false,
+    validateOnInput: false
+});
+
+const [password, passwordAttr] = defineField("password", {
+    validateOnBlur: false,
+    validateOnChange: false,
+    validateOnModelUpdate: false,
+    validateOnInput: false
+})
 
 const user = useUser();
 
 const pendingRegister = ref(false);
-const inputError = ref({});
 const errorRegister = ref(false);
 
 const handleRegister = async () => {
-    if (pendingRegister.value || !payload.value.email || !payload.value.password) return;
-
-    inputError.value = {}
-    errorRegister.value = null;
+    if (pendingRegister.value || !name.value || !email.value || !password.value) return;
     pendingRegister.value = true;
 
-    const {data, pending, error} = await register({...payload.value});
+    const validating = await validate();
+
+    if (!validating.valid) {
+        pendingRegister.value = false;
+        return;
+    };
+
+    errorRegister.value = null;
+
+    const {data, pending, error} = await register(values);
 
     pendingRegister.value = pending.value
 
     if (error.value) {
         if (error.value.statusCode === 400) {
-            inputError.value = error.value.data.data;
+            setErrors(error.value.data.data);
             return;
         }
         errorRegister.value = error.value.data.message

@@ -6,7 +6,7 @@ import bodyValidator from "../validator/index"
 export default defineEventHandler(async e => {
     const body = await readBody(e);
 
-    const validating = bodyValidator(body).isEmail("email", "Fill correct email!").isEmpty("password", "Password cannot be empty")
+    const validating = bodyValidator(body).isEmpty("email", "Email cannot be empty!").isEmail("email", "Fill correct email!").isEmpty("password", "Password cannot be empty")
 
     if (validating.hasErr()) {
         throw createError({

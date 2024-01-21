@@ -74,7 +74,5 @@ export default defineEventHandler(async e => {
         }
     }
 
-    // if (!user) throw createError({statusCode: 401, message: "Unauthenticated"});
-    console.log("lanjut")
     e.context.auth = user;
 });

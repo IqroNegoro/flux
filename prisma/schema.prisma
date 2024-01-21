@@ -28,6 +28,7 @@ model products {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   image String
+  weight Int
   available Boolean @default(false)
   stock Int? @default(0)
   price Int? @default(0)
@@ -105,6 +106,7 @@ enum Status {
 type ProductsTransaction {
   id String @map("_id") @db.ObjectId
   image String
+  weight Int
   name String
   price Int @default(0)
   quantity Int @default(0)
