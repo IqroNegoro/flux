@@ -21,7 +21,7 @@
                     <p class="text-xs" v-if="errors.password"> {{ errors.password }} </p>
                     <p class="text-xs" v-if="errorLogin"> {{errorLogin}} </p>
                 </div>
-                <button class="disabled:cursor-not-allowed flex justify-center items-center w-full hover:bg-primary bg-secondary duration-150 rounded-sm text-white p-2" type="submit" @submit.prevent="handleLogin" :disabled="pendingRegister || !email || !password">
+                <button class="disabled:cursor-not-allowed flex justify-center items-center w-full hover:bg-primary bg-secondary duration-150 rounded-sm text-white p-2" type="submit" @submit.prevent="handleLogin" :disabled="pendingLogin || !email || !password">
                     <i v-if="pendingLogin" class='bx bx-loader-alt bx-spin' ></i>
                     <p v-else>
                         Login
@@ -34,12 +34,12 @@
 </template>
 <script setup>
 import { toTypedSchema } from "@vee-validate/yup";
-import * as yup from "yup"
+import { object, string } from "yup"
 
 const { values, defineField, errors, setErrors, validate } = useForm({
-    validationSchema: toTypedSchema(yup.object({
-        email: yup.string().required().email(),
-        password: yup.string().required()
+    validationSchema: toTypedSchema(object({
+        email: string().required("Please fill a correct email").email("Please fill a correct email"),
+        password: string().required("Password required")
     })),
     initialValues: {
         email: "iqronegoro0@gmail.com",
