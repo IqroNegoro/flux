@@ -1,7 +1,7 @@
 <template>
-    <div class="flex justify-center items-center flex-col gap-2 p-4 w-full lg:w-3/4 mx-auto" v-if="order">
-        <h1 class="font-bold text-4xl">Order</h1>
-        <p class="text-xl"> Check your order status </p>
+<div class="flex justify-center items-center flex-col gap-2 p-4 w-full lg:w-3/4 mx-auto" v-if="order">
+    <h1 class="font-bold text-4xl">Order</h1>
+    <p class="text-xl"> Check your order status </p>
         <div class="w-full flex justify-center flex-col md:flex-row items-center md:items-start gap-8">
             <div class="w-full flex flex-col gap-4">
                 <OrderCard v-for="product in order.products" :key="product.id" :product="product" />

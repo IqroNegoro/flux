@@ -11,7 +11,7 @@
                     {{ cart.product?.name }}
                 </p>
                 <p>
-                    {{ cart.product?.description }}
+                    {{ cart.product?.sub }}
                 </p>
             </div>
             <span class="text-sm text-gray-500">{{formatRp(cart.product?.price)}}</span>

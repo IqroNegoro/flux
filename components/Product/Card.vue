@@ -6,7 +6,7 @@
         <div class="p-2 bg-grey-100">
             <p class="truncate font-medium tracking-wide"> {{ product.name }} </p>
             <p class="text-gray-500">{{formatRp(product.price)}}</p>
-            <p class="truncate">{{product.description}}</p>
+            <p class="truncate">{{product.sub}}</p>
         </div>
     </NuxtLink>
 </template>

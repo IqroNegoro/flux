@@ -9,9 +9,9 @@
                 <p class="font-medium text-lg">
                     {{ cart.product?.name }}
                 </p>
-                <p>
-                    {{ cart.product?.description }}
-                </p>
+                <div>
+                    {{ cart.product?.sub }}
+                </div>
                 <p class="text-gray-500 text-sm">
                     x{{ cart.quantity }}
                 </p>

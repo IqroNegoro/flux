@@ -13,10 +13,10 @@ export default defineEventHandler(async e => {
                 select: {
                     id: true,
                     name: true,
+                    sub: true,
                     image: true,
                     description: true,
                     price: true,
-                    stock: true
                 }
             },
             quantity: true
@@ -24,6 +24,6 @@ export default defineEventHandler(async e => {
         skip: parseInt(skip) || 0,
         take: parseInt(limit) || 10
     });
-
+    console.log(carts)
     return carts;
 })

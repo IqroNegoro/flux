@@ -27,10 +27,11 @@ model users {
 model products {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   name String
+  sub String
   image String
   weight Int
   available Boolean @default(false)
-  stock Int? @default(0)
+  published Boolean @default(false)
   price Int? @default(0)
   description String?
   carts carts[]

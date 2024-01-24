@@ -16,6 +16,7 @@ export default defineEventHandler(async e => {
             id: true,
             image: true,
             name: true,
+            weight: true,
             price: true,
             description: true
         }
@@ -58,7 +59,7 @@ export default defineEventHandler(async e => {
         first_name: e.context.auth.name,
         phone: data.shipping_address.phone,
         address: data.shipping_address.address,
-        shipping_address: {...data.shipping_address}
+        shipping_address: {...data.shipping_address, city: data.shipping_address.city.city_name}
     }
 
     parameter.item_details = item_details.map((v, i) => ({...v, quantity: data.items[i].quantity}))
@@ -81,7 +82,7 @@ export default defineEventHandler(async e => {
                 method: res.payment_type,
                 paymentStatus: res.transaction_status,
                 midtransResponse: res,
-                shippingAddress: data.shipping_address
+                shippingAddress: {...data.shipping_address, city: data.shipping_address.city.city_name}
             }
         });
         setResponseHeaders(e, 201);
@@ -90,7 +91,6 @@ export default defineEventHandler(async e => {
             data: order.id,
         }
     }).catch(({ApiResponse}) => {
-        console.log(ApiResponse)
         let error = null;
         if (ApiResponse.status_code == 505 || ApiResponse.status_code == 503) {
             error = {
