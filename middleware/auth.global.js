@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     if (error.value) {
         user.$reset();
 
-        if (authRoutes.includes(to.name) || authRoutes(from.name)) return await navigateTo("/login");
+        if (authRoutes.includes(to.name) || authRoutes.includes(from.name)) return await navigateTo("/login");
     }
 
     if (data.value) {
