@@ -1,21 +1,25 @@
 import prisma from "~/server/db";
 import bcrypt from "bcrypt";
-import validator from "validator";
-import bodyValidator from "../validator/index";
+import { object, string } from "yup";
 
 export default defineEventHandler(async e => {
     let body = await readBody(e);
 
-    const validating = bodyValidator(body).isEmpty("name", "Please fill name").isEmail("email", "Fill correct email!").isLength("password", {min: 4}, "Password cannot less than 4 characters").isAlpha("name", "Fill correct name!")
-
-    if (validating.hasErr()) {
+    let { name, email, password } = await object({
+        name: string().required(),
+        email: string().required().email(),
+        password: string().required()
+    }).validate(body, {abortEarly: false}).catch(err => {
+        let errors = {};
+        err.inner.forEach(v => {
+            errors[v.path] = v.message
+        })
         throw createError({
             statusCode: 400,
-            data: validating.result
+            message: "Something went wrong",
+            data: errors
         })
-    }
-
-    let {email, password, name} = validating.result;
+    });
 
     if (await prisma.users.findUnique({
         where: {
@@ -32,7 +36,9 @@ export default defineEventHandler(async e => {
 
     const users = await prisma.users.create({
         data: {
-            ...validating.result
+            name,
+            email,
+            password
         },
         select: {
             email: true,

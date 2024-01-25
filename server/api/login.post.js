@@ -1,21 +1,25 @@
 import prisma from "~/server/db";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import bodyValidator from "../validator/index"
+import { object, string } from "yup";
 
 export default defineEventHandler(async e => {
     const body = await readBody(e);
 
-    const validating = bodyValidator(body).isEmpty("email", "Email cannot be empty!").isEmail("email", "Fill correct email!").isEmpty("password", "Password cannot be empty")
-
-    if (validating.hasErr()) {
+    let {email, password} = await object({
+        email: string().required("Please fill a correct email").email("Please fill a correct email"),
+        password: string().required("Password required")
+    }).validate(body, {abortEarly: false}).catch(err => {
+        let errors = {};
+        err.inner.forEach(v => {
+            errors[v.path] = v.message
+        })
         throw createError({
             statusCode: 400,
-            data: validating.result
-        });
-    }
-
-    const { email, password } = validating.result
+            message: "Something went wrong",
+            data: errors
+        })
+    });
 
     const user = await prisma.users.findUnique({
         where: {

@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import unescape from "validator/lib/unescape";
 let prisma;
 
 if (!prisma) {
