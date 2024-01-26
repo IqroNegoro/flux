@@ -41,10 +41,10 @@ const { values, defineField, errors, setErrors, validate } = useForm({
         email: string().required("Please fill a correct email").email("Please fill a correct email"),
         password: string().required("Password required")
     })),
-    initialValues: {
-        email: "iqronegoro0@gmail.com",
-        password: "iqro"
-    },
+    // initialValues: {
+    //     email: "iqronegoro0@gmail.com",
+    //     password: "iqro"
+    // },
 });
 
 const [email, emailAttr] = defineField("email", {

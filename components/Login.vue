@@ -31,8 +31,8 @@
 </template>
 <script setup>
 const payload = ref({
-    email: "iqronegoro0@gmail.com",
-    password: "iqro"
+    email: "",
+    password: ""
 });
 const user = useUser();
 const unauthenticated = useUnauthenticated();
