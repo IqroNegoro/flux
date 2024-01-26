@@ -1,7 +1,7 @@
 <template>
     <div class="w-full h-screen px-4 text-center snap-y overflow-y-auto snap-mandatory">
       <nav class="px-2 fixed z-10 bg-white top-0 left-0 w-full h-16 flex justify-between items-center font-medium">
-        <h1 class="text-xl">Flux</h1>
+        <NuxtLink :to="{name: 'index'}" class="text-xl">Flux</NuxtLink>
         <div class="flex flex-row gap-2">
           <NuxtLink :to="{name: 'shop'}" class="border border-primary px-4 py-1 hover:bg-primary hover:text-white">Shop</NuxtLink>
           <NuxtLink :to="{name: 'register'}" class="bg-primary px-4 py-1 text-white rounded-sm">Register</NuxtLink>
