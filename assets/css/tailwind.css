@@ -56,4 +56,8 @@
     .skeleton {
         @apply bg-black/25 animate-pulse rounded-full
     }
+
+    .hidden-scrollbar::-webkit-scrollbar {
+        @apply hidden;
+    }
 }
