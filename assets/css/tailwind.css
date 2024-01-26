@@ -6,7 +6,7 @@
 
 @layer base {
     * {
-        @apply outline-none overscroll-contain
+        @apply outline-none overscroll-contain scroll-smooth
     }
 
     * {
