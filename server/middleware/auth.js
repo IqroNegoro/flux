@@ -61,14 +61,12 @@ export default defineEventHandler(async e => {
                 maxAge: 60 * 15,
                 httpOnly: true,
                 secure: true,
-                sameSite: "none"
             });
             
             setCookie(e, "refresh", refresh, {
                 maxAge: 60 * 60 * 24,
                 httpOnly: true,
                 secure: true,
-                sameSite: "none"
             });
             console.log("cooke set!")
         }

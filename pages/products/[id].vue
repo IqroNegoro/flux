@@ -1,6 +1,6 @@
 <template>
     <div class="flex justify-center flex-col sm:flex-row p-4 gap-4" v-if="product">
-        <img :src="product.image" :alt="product.name" class="md:w-3/4 rounded-md aspect-square object-center object-cover">
+        <img :src="product.image" :alt="product.name" class="md:w-[40rem] rounded-md aspect-square object-center object-cover">
         <div class="w-full flex flex-col gap-4">
             <div class="flex flex-col gap-1">
                 <h1 class="text-lg md:text-4xl text-black font-medium">{{ product.name }}</h1>

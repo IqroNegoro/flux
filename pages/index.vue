@@ -170,13 +170,15 @@
     </div>
 </template>
 <script setup>
+definePageMeta({
+  layout: ""
+});
+
 const user = useUser();
 const unauthenticated = useUnauthenticated();
 
 useHead({
     title: "Flux Store"
 });
-definePageMeta({
-  layout: false
-})
+
 </script>
