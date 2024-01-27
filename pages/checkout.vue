@@ -2,34 +2,13 @@
     <div class="flex justify-center items-center flex-col gap-2 p-4 w-full lg:w-3/4 mx-auto">
         <h1 class="font-bold text-4xl">Shopping Cart</h1>
         <p class="text-xl"> Make sure nothing left </p>
-        <div class="w-full flex justify-center flex-col md:flex-row items-center md:items-start gap-8">
-            <div class="w-full flex flex-col gap-4">
+        <div class="w-full flex justify-center flex-col md:flex-row items-center md:items-start gap-8 lg:grid lg:grid-cols-2 lg:grid-rows-2">
+            <div class="w-full flex flex-col gap-4 rounded-sm">
+                <p class="text-xl font-medium">Products</p>
                 <CartCheckoutCard v-for="cart in checkout.checkout" :key="cart.id" :cart="cart" />
             </div>
-            <div class="w-3/4 flex flex-col gap-8 max-md:order-first">
-                <div class="w-full h-96 flex flex-col bg-gray-100 p-8 justify-between rounded-md">
-                    <div>
-                        <h1 class="text-xl font-medium">Order Summary</h1>
-                        <table class="w-full table-fixed">
-                            <tbody>
-                                <tr class="font-medium">
-                                    <td>Subtotal</td>
-                                    <td>{{formatRp(total)}}</td>
-                                </tr>
-                                <tr class="font-medium">
-                                    <td>Payment</td>
-                                    <td>{{ capitalize(payment_provider) || '-' }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <button class="bg-secondary py-2 hover:bg-primary font-medium w-full text-white" @click="handleCreateOrder" :disabled="pending">
-                        <i v-if="pending" class="bx bx-loader-alt bx-spin"></i>
-                        <p v-else>
-                            Checkout
-                        </p>
-                    </button>
-                </div>
+            <div class="w-full flex flex-col gap-8">
+                <h1 class="font-medium text-xl">Purchase Total: {{ formatRp(total) }} </h1>
                 <div class="flex flex-col gap-2">
                     <h1 class="text-xl font-medium">Choose Payment Method</h1>
                     <div class="flex flex-row justify-between">
@@ -45,7 +24,7 @@
                     <p class="text-red-500" v-if="errors.payment_type">{{ errors.payment_type }}</p> 
                 </div>
                 <div class="flex flex-col gap-2">
-                    <h1 class="font-medium text-xl">Chooye Payment Provider</h1>
+                    <h1 class="font-medium text-xl">Choose Payment Provider</h1>
                     <div class="flex flex-col items-start gap-2" v-if="payment_type === 'bank_transfer'">
                         <div class="flex flex-row gap-2 items-center justify-center">
                             <input id="bri" type="radio" name="payment_provider" value="bri" v-model="payment_provider" :checked="payment_provider === 'bri'">
@@ -127,6 +106,12 @@
                     <input type="text" placeholder="Detail Address" class="font-medium border border-primary" v-model="address">
                     <p class="text-red-500" v-if="errors.address">{{ errors.address }}</p> 
                 </div>
+                <button class="bg-secondary py-2 hover:bg-primary font-medium w-full text-white" @click="handleCreateOrder" :disabled="pending">
+                    <i v-if="pending" class="bx bx-loader-alt bx-spin"></i>
+                    <p v-else>
+                        Checkout
+                    </p>
+                </button>
             </div>
         </div>
         <div class="w-full p-4 flex flex-col gap-4">

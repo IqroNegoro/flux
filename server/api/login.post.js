@@ -62,16 +62,16 @@ export default defineEventHandler(async e => {
 
     setCookie(e, "token", token, {
         maxAge: 60 * 15,
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        // httpOnly: true,
+        // secure: true,
+        // sameSite: "strict"
     });
     
     setCookie(e, "refresh", refresh, {
         maxAge: 60 * 60 * 24,
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
+        // httpOnly: true,
+        // secure: true,
+        // sameSite: "strict"
     });
                                                     
     return user

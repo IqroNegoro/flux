@@ -4,7 +4,13 @@
             <h1><span class="font-medium">Order ID</span> {{ order.orderId }}</h1>
         </div>
         <div class="grid grid-rows-1 grid-cols-3">
-            <OrderCard v-for="product in order.products" :key="product.id" :product="product" />
+            <OrderCard v-for="product in order.products.slice(0, order.products.length >= 3 ? 2 : 3)" :key="product.id" :product="product" />
+            <div v-if="order.products.length >= 3" class="relative">
+                <div class="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black/50 z-10">
+                    <p class="text-white font-medium">And {{ order.products.length - 3 }} More </p>
+                </div>
+                <OrderCard :key="order.products[2].id" :product="order.products[2]" />
+            </div>
         </div>
         <div class="w-full flex justify-between items-start">
             <div>
