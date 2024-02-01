@@ -1,20 +1,37 @@
 import prisma from "~/server/db";
 
 export default defineEventHandler(async e => {
-    const data = getQuery(e);
-    console.log(data.orderBy ? "asli" : "palsu")
-    const {orderBy = "createdAt", price, categoryIds, type = 'asc'} = getQuery(e);
+    const filter = getQuery(e);
 
-    console.log(orderBy, type)
-
-    let products = await prisma.products.findMany({
+    const options = {
         where: {
-             published: true,
-        },
+            published: true,
+       },
         orderBy: {
-            [orderBy || 'createdAt']: type
+            [filter.orderBy || "createdAt"]: filter.type || "asc"
         }
-    });
+    };
+
+    if (+filter.highest) {
+        options.where.price = {
+            lte: +filter.highest
+        }
+    }
+
+    if (+filter.lowest) {
+        options.where.price = {
+            ...options.where.price,
+            gte: +filter.lowest
+        }
+    }
+
+    if (filter?.categoryIds) {
+        options.where.categoryIds = {
+            has: filter.categoryIds
+        }
+    }
+
+    let products = await prisma.products.findMany(options);
 
     return products;
 })

@@ -27,12 +27,12 @@
                     <div class="flex justify-center items-center flex-row gap-2 font-medium pb-2">
                         <div class="flex flex-row justify-center items-center gap-1 bg-black/10 px-2 text-sm">
                             <p class="font-medium">Rp</p>
-                            <input type="number" class="w-full bg-transparent" placeholder="Lowest" v-model="filter.price.lowest">
+                            <input type="number" class="w-full bg-transparent" placeholder="Lowest" v-model="filter.lowest">
                         </div>
                         -
                         <div class="flex flex-row justify-center items-center gap-1 bg-black/10 px-2 text-sm">
                             <p class="font-medium">Rp</p>
-                            <input type="number" class="w-full bg-transparent" placeholder="Highest" v-model="filter.price.highest">
+                            <input type="number" class="w-full bg-transparent" placeholder="Highest" v-model="filter.highest">
                         </div>
                     </div>
                 </div>
@@ -66,20 +66,16 @@ const { data: categories, pending: pendingCategories } = await getCategories();
 
 const filter = ref({
     orderBy: "",
-    price: {
-        highest: 0,
-        lowest: 0
-    },
+    highest: 0,
+    lowest: 0,
     categoryIds: "",
     type: "asc"
 });
 
 const reset = () => {
     filter.value.orderBy = "";
-    filter.value.price = {
-        highest: 0,
-        lowest: 0
-    }
+    filter.value.highest = 0,
+    filter.value.lowest = 0,
     filter.value.categoryIds = "";
     filter.value.type = "asc";
     emit("resetFilter")

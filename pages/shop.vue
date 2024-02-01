@@ -36,10 +36,8 @@ const isFilter = ref(false);
 
 const filters = ref({
     orderBy: "",
-    price: {
-        highest: 0,
-        lowest: 0
-    },
+    highest: 0,
+    lowest: 0,
     categoryIds: ""
 });
 
