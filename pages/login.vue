@@ -79,13 +79,16 @@ const handleLogin = async () => {
 
     errorLogin.value = null;
 
-    const {data, pending, error} = await login(values);
+    const {data, pending, error} = await login({
+        email: values.email,
+        password: values.password
+    });
+
     pendingLogin.value = pending.value
 
     if (error.value) {
         if (error.value.statusCode === 400) {
             setErrors(error.value.data.data)
-            return;
         }
         errorLogin.value = error.value.data.message
         return;
@@ -93,7 +96,7 @@ const handleLogin = async () => {
 
     user.$patch({...data.value});
 
-    return await navigateTo("/")
+    return await navigateTo("/shop")
 }
 
 useHead({

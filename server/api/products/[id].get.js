@@ -19,12 +19,14 @@ export default defineEventHandler(async e => {
         }
     });
 
-    product.description = unescape(product.description)
-
     if (!product) throw createError({
         statusCode: 404,
         message: "Product not found"
     });
+
+    product.description = unescape(product.description)
+    
+    console.log(product.description)
 
     return product
 })

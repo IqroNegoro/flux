@@ -21,7 +21,16 @@ model users {
   // orders orders[]
   roles Roles @default(USER)
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @db.Timestamp @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model categories {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+  productIds String[] @db.ObjectId
+  products products[] @relation(fields: [productIds], references: [id]) // many to many
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model products {
@@ -30,14 +39,18 @@ model products {
   sub String
   image String
   weight Int
-  available Boolean @default(false)
+  stock Int? @default(0)
   published Boolean @default(false)
   price Int? @default(0)
-  description String?
+  description String
+  categoryIds String[] @db.ObjectId
+  categories categories[] @relation(fields: [categoryIds], references: [id])
   carts carts[]
   // orders orders[]
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @db.Timestamp @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index(fields: [name])
 }
 
 model carts {
@@ -48,26 +61,25 @@ model carts {
   product products @relation(fields: [productId], references: [id])
   quantity Int
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @db.Timestamp @updatedAt
-
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([productId, userId])
 }
 
 // model orders {
 //   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   productId String @db.ObjectId
+//   product products @relation(fields: [productId], references: [id])
 //   userId String @db.ObjectId
 //   user users @relation(fields: [userId], references: [id])
 //   transactionsId String @db.ObjectId
 //   transactions transactions @relation(fields: [transactionsId], references: [id])
 //   createdAt DateTime @default(now())
-//   updatedAt DateTime @default(now())
-// } @updatedAt
+//   updatedAt DateTime @default(now()) @updatedAt
+// }
 
 model transactions {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  // orderId String  @db.ObjectId
-  // order orders[]
+ id String @id @default(auto()) @map("_id") @db.ObjectId
   orderId String @unique
   userId String @db.ObjectId
   user users @relation(fields: [userId], references: [id])
@@ -79,7 +91,7 @@ model transactions {
   midtransResponse Json
   shippingAddress ShippingAddress
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @db.Timestamp @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model tokens {
@@ -89,7 +101,7 @@ model tokens {
   token String?
   expired DateTime?
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @db.Timestamp @updatedAt
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 enum Roles {
@@ -102,6 +114,7 @@ enum Status {
   CREATED
   PENDING
   CONFIRMED
+  SHIP
   SUCCESS
 }
 
@@ -113,6 +126,12 @@ type ProductsTransaction {
   price Int @default(0)
   quantity Int @default(0)
   description String?
+  categories Category[]
+}
+
+type Category {
+  id String
+  name String
 }
 
 type ShippingAddress {

@@ -8,7 +8,7 @@
             </div>
             <div class="flex flex-col gap-1">
                 <p class="text-xl">Product Description</p>
-                <div class="text-gray-500 font-light" v-html="product.description"></div>
+                <div class="text-gray-500 font-light whitespace-pre-line" v-html="product.description"></div>
             </div>
             <button class="p-2 md:w-48 flex justify-center items-center bg-secondary hover:bg-primary transition-colors duration-150 font-medium text-white rounded-sm" @click="user.authenticated ? handleAdd() : unauthenticated = true">
                 <i v-if="cartPending" class="bx bx-loader-alt bx-spin"></i>
@@ -37,8 +37,9 @@ cartPending.value = false;
 const handleAdd = async () => {
     await executeCart();
 
-    if (error.value) {
-        notification.error("Something wrong, try again")
+    if (errorCart.value) {
+        notification.error("Something wrong, try again");
+        return;
     }
     notification.success("Item added to cart")
 }

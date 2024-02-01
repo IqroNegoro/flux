@@ -22,5 +22,5 @@ export const logout = async () => {
     
     const user = useUser();
     user.$reset();
-    return await navigateTo("/");
+    return await navigateTo("/shop");
 };

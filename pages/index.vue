@@ -21,42 +21,7 @@
             <div class="absolute right-2 top-2 bg-primary flex justify-center items-center p-2 rounded-full">
               <i class="bx bxs-heart text-white"></i>
             </div>
-            <img class="w-48 rounded-md" src="https://cdn.discordapp.com/attachments/1190176942293520454/1193109556407058502/2product-59.98919-BLACKWHITE-Xms-2023-08-19T1352210700_1000x1.png?ex=65bdf9dd&is=65ab84dd&hm=424c39f969c59aed387528dc6cfe59889e67be8345b0de069285dae375c199e8&" alt="Shoes">
-            <div class="flex flex-col gap-4">
-              <div class="font-medium flex flex-row justify-between">
-                <h1 class="font-semibold">Shoes</h1>
-                <p>{{formatRp(299999)}}</p>
-              </div>
-              <button @click="unauthenticated = true" class="bg-primary py-2 rounded-sm text-white">Add To Cart</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="w-full h-screen flex snap-center justify-center md:justify-around items-center flex-col md:flex-row gap-4">
-        <div class="w-full flex flex-col gap-2">
-          <h1 class="text-3xl font-medium text-center leading-normal">Stay on top of your fashion with Fluxshop</h1>
-          <p class="text-secondary font-light text-xs md:text-base">We offer a wide range of clothing, shoes, and accessories for men, women, and kids. From everyday basics to statement pieces, our collection has something for every occasion</p>
-          <NuxtLink :to="{name: 'shop'}" class="bg-primary px-4 py-1 text-white rounded-sm mx-auto">View All Products</NuxtLink>
-        </div>
-        <div class="w-full text-xs md:text-sm flex flex-row gap-2 justify-center items-center">
-          <div class="max-md:mx-auto w-max p-3 flex border border-primary flex-col gap-1 rounded-md relative">
-            <div class="absolute right-2 top-2 bg-primary flex justify-center items-center p-2 rounded-full">
-              <i class="bx bxs-heart text-white"></i>
-            </div>
-            <img class="w-36 rounded-md mx-auto" src="/img/shoes.png" alt="Shoes">
-            <div class="flex flex-col gap-4">
-              <div class="font-medium flex flex-row justify-between">
-                <h1 class="font-semibold">Shoes</h1>
-                <p>{{formatRp(299999)}}</p>
-              </div>
-              <button @click="unauthenticated = true" class="bg-primary py-2 rounded-sm text-white">Add To Cart</button>
-            </div>
-          </div>
-          <div class="max-md:mx-auto w-max p-3 flex border border-primary flex-col gap-1 rounded-md relative">
-            <div class="absolute right-2 top-2 bg-primary flex justify-center items-center p-2 rounded-full">
-              <i class="bx bxs-heart text-white"></i>
-            </div>
-            <img class="w-36 rounded-md mx-auto" src="/img/bag.png" alt="Shoes">
+            <img class="w-48 rounded-md" fetchpriority="high" src="https://cdn.discordapp.com/attachments/1190176942293520454/1193109556407058502/2product-59.98919-BLACKWHITE-Xms-2023-08-19T1352210700_1000x1.png?ex=65bdf9dd&is=65ab84dd&hm=424c39f969c59aed387528dc6cfe59889e67be8345b0de069285dae375c199e8&" alt="Shoes">
             <div class="flex flex-col gap-4">
               <div class="font-medium flex flex-row justify-between">
                 <h1 class="font-semibold">Shoes</h1>
@@ -115,12 +80,47 @@
           </div>
         </div>
       </div>
+      <div class="w-full h-screen flex snap-center justify-center md:justify-around items-center flex-col md:flex-row gap-4">
+        <div class="w-full flex flex-col gap-2">
+          <h1 class="text-3xl font-medium text-center leading-normal">Stay on top of your fashion with Fluxshop</h1>
+          <p class="text-secondary font-light text-xs md:text-base">We offer a wide range of clothing, shoes, and accessories for men, women, and kids. From everyday basics to statement pieces, our collection has something for every occasion</p>
+          <NuxtLink :to="{name: 'shop'}" class="bg-primary px-4 py-1 text-white rounded-sm mx-auto">View All Products</NuxtLink>
+        </div>
+        <div class="w-full text-xs md:text-sm flex flex-row gap-2 justify-center items-center">
+          <div class="max-md:mx-auto w-max p-3 flex border border-primary flex-col gap-1 rounded-md relative">
+            <div class="absolute right-2 top-2 bg-primary flex justify-center items-center p-2 rounded-full">
+              <i class="bx bxs-heart text-white"></i>
+            </div>
+            <img class="w-36 rounded-md mx-auto" src="/img/shoes.png" alt="Shoes">
+            <div class="flex flex-col gap-4">
+              <div class="font-medium flex flex-row justify-between">
+                <h1 class="font-semibold">Shoes</h1>
+                <p>{{formatRp(299999)}}</p>
+              </div>
+              <button @click="unauthenticated = true" class="bg-primary py-2 rounded-sm text-white">Add To Cart</button>
+            </div>
+          </div>
+          <div class="max-md:mx-auto w-max p-3 flex border border-primary flex-col gap-1 rounded-md relative">
+            <div class="absolute right-2 top-2 bg-primary flex justify-center items-center p-2 rounded-full">
+              <i class="bx bxs-heart text-white"></i>
+            </div>
+            <img class="w-36 rounded-md mx-auto" src="/img/bag.png" alt="Shoes">
+            <div class="flex flex-col gap-4">
+              <div class="font-medium flex flex-row justify-between">
+                <h1 class="font-semibold">Shoes</h1>
+                <p>{{formatRp(299999)}}</p>
+              </div>
+              <button @click="unauthenticated = true" class="bg-primary py-2 rounded-sm text-white">Add To Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="w-full h-screen flex snap-center justify-center items-center text-center flex-col gap-4">
         <h1 class="text-xl md:text-3xl font-medium leading-normal">Making the Right Decision <br> Trusted Product Reviews</h1>
         <p class="text-sm font-light text-secondary">Find the best products by reading reviews from real customers</p>
         <div class="w-full hidden-scrollbar grid grid-cols-3 grid-rows-1 max-md:flex max-md:flex-row max-md:snap-x max-md:overflow-x-auto max-md:snap-mandatory md:text-left text-center gap-3 md:gap-6 px-4">
           <div class="bg-secondary text-white flex justify-center items-center w-full shrink-0 snap-center flex-col p-4 rounded-md gap-3">
-            <p class="text-sm">"Fluxshop offers a wide selection of quality products from various categories, from fashion to electronics. ALl products offered by Fluxshop have gone throught strict selection to ensure the quality."</p>
+            <p class="text-sm">"Fluxshop offers a wide selection of quality products from various categories, from fashion to electronics. All products offered by Fluxshop have gone throught strict selection to ensure the quality."</p>
             <div class="flex flex-row gap-1 text-[#FFC250]">
               <i class="bx bxs-star"></i>
               <i class="bx bxs-star"></i>

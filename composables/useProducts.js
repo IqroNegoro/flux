@@ -9,3 +9,11 @@ export const getProduct = async id => await useApi(`products/${id}`, {
     lazy: true,
     key: `get-${id}-product`
 });
+
+export const getFilteredProducts = async params => await useApi(`products`, {
+    params,
+    default: () => {},
+    lazy: true,
+    immediate: false,
+    key: 'get-filtered-products'
+})

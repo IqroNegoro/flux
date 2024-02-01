@@ -21,8 +21,6 @@ export default defineEventHandler(async e => {
             expired: null
         }
     });
+
     setResponseStatus(e, 204);
-    return {
-        message: "Success logout"
-    }
 })
