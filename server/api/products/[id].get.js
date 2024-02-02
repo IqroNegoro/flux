@@ -3,11 +3,8 @@ import isMongoId from "validator/lib/isMongoId.js"
 import unescape from "validator/lib/unescape.js";
 
 export default defineEventHandler(async e => {
-    console.log("loheh");
-    await new Promise(resolve => setTimeout(resolve, 3000))
-    console.log("arerere");
-    const {id} = getRouterParams(e, "id");
-   
+    const { id } = getRouterParams(e, "id");
+
     if (!isMongoId(id)) throw createError({
         statusCode: 400,
         message: "Invalid ID",
@@ -28,6 +25,6 @@ export default defineEventHandler(async e => {
     });
 
     product.description = unescape(product.description)
-    
+
     return product
 })

@@ -1,29 +1,32 @@
 <template>
     <div class="w-full h-16 shadow-sm flex justify-between items-center flex-row px-4">
-        <NuxtLink :to="{name: 'shop'}" class="text-primary font-bold md:text-3xl tracking-widest">Flux</NuxtLink>
+        <NuxtLink :to="{ name: 'shop' }" class="text-primary font-bold tracking-widest">Flux</NuxtLink>
         <div class="flex flex-row justify-center items-center gap-2">
-            <form class="focus-within:border focus-within:border-primary flex flex-row justify-center items-center bg-gray-50 rounded-full p-1 px-3" @submit.prevent>
-                <button type="submit" class="pr-1">
-                    <i class="bx bx-search text-2xl text-primary"></i>
-                </button>
-                <input type="text" class="bg-transparent">
-            </form>
+            <button type="submit" class="pr-1">
+                <i class="text-2xl bx bx-search text-primary"></i>
+            </button>
             <button @click="unauthenticated = true">
-                <i class="bx bxs-cart text-2xl text-primary"></i>
+                <i class="text-2xl bx bxs-cart text-primary"></i>
             </button>
             <button v-if="!user.authenticated" @click="unauthenticated = true">
-                <i class="bx bx-package text-2xl text-primary"></i>
+                <i class="text-2xl bx bx-package text-primary"></i>
             </button>
-            <NuxtLink v-else :to="{name: user.authenticated ? 'orders' : 'login'}">
-                <i class="bx bx-package text-2xl text-primary"></i>
+            <NuxtLink v-else :to="{ name: user.authenticated ? 'orders' : 'login' }">
+                <i class="text-2xl bx bx-package text-primary"></i>
             </NuxtLink>
-            <div class="max-md:hidden flex flex-row justify-center items-center gap-2 border-l pl-3" v-if="!user.authenticated">
-                <NuxtLink :to="{name: 'login'}" class="text-sm rounded-md border border-secondary flex justify-center items-center px-4 py-1 font-semibold text-primary"> Login </NuxtLink>
-                <NuxtLink :to="{name: 'register'}" class="text-sm rounded-md bg-primary flex justify-center items-center px-4 py-1 font-semibold text-white"> Register </NuxtLink>
+            <div class="max-md:hidden flex flex-row justify-center items-center gap-2 border-l pl-3"
+                v-if="!user.authenticated">
+                <NuxtLink :to="{ name: 'login' }"
+                    class="rounded-md border border-secondary flex justify-center items-center px-4 py-1 font-semibold text-primary">
+                    Login </NuxtLink>
+                <NuxtLink :to="{ name: 'register' }"
+                    class="rounded-md bg-primary flex justify-center items-center px-4 py-1 font-semibold text-white">
+                    Register </NuxtLink>
             </div>
             <div class="max-md:hidden flex flex-row justify-center items-center gap-2 border-l pl-3" v-else>
-                <p>{{user.name}}</p>
-                <button class="text-sm rounded-md bg-primary flex justify-center items-center px-4 py-1 font-semibold text-white" @click="logout"> Logout </button>
+                <p>{{ user.name }}</p>
+                <button class="rounded-md bg-primary flex justify-center items-center px-4 py-1 font-semibold text-white"
+                    @click="logout"> Logout </button>
             </div>
         </div>
     </div>
