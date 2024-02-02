@@ -1,16 +1,13 @@
 <template>
     <div class="w-full flex flex-col gap-4 min-h-96 rounded-md bg-gray-50 p-4">
-        <div>
+        <div class="flex flex-row justify-between">
             <h1><span class="font-medium">Order ID</span> {{ order.orderId }}</h1>
+            <NuxtLink :to="{name: 'orders-id', params: {id: order.id}}" class="border border-primary rounded-sm text-center font-medium px-3 py-1" :class="{'bg-primary text-white': order.paymentStatus == 'settlement'}">
+                Detail
+            </NuxtLink>
         </div>
-        <div class="grid grid-rows-1 grid-cols-3">
-            <OrderCard v-for="product in order.products.slice(0, order.products.length >= 3 ? 2 : 3)" :key="product.id" :product="product" />
-            <div v-if="order.products.length >= 3" class="relative">
-                <div class="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black/50 z-10">
-                    <p class="text-white font-medium">And {{ order.products.length - 3 }} More </p>
-                </div>
-                <OrderCard :key="order.products[2].id" :product="order.products[2]" />
-            </div>
+        <div class="flex flex-row gap-2 overflow-x-auto pb-2">
+            <OrderCard v-for="product in order.products" :key="product.id" :product="product" />
         </div>
         <div class="w-full flex justify-between items-start">
             <div>
@@ -31,8 +28,12 @@
         </div>
         <hr>
         <div class="flex flex-col gap-4">
+            <div class="font-medium text-xl flex flex-row justify-between items-center w-full">
+                <p>Status Order</p>
+                <p class="text-xs"> Updated at {{ moment(order.updatedAt).format('D/MM/y h:mm a') }}</p>
+            </div>
             <div class="w-full rounded-full h-4 bg-black/10">
-                <div class="bg-primary h-4 rounded-full" :class="{'w-[25%]': order.status === 'CREATED', 'w-[50%]': order.status === 'PENDING', 'w-[75%]': order.status === 'CONFIRMED', 'w-full': order.status === 'SUCCESS'}"></div>
+                <div class="bg-primary h-4 rounded-full" :class="{'w-[25%]': order.status === 'CREATED', 'w-[50%]': order.status === 'PENDING', 'w-[75%]': order.status === 'CONFIRMED', 'w-full': order.status === 'SUCCESS' || order.status === 'SHIP' || order.status == 'CANCEL'}"></div>
             </div>
             <div class="flex flex-row justify-between items-center">
                 <div class="flex flex-col gap-2 justify-center items-center">
@@ -41,36 +42,58 @@
                             <i class="bx bx-check"></i>
                         </div>
                     </div>
-                    <p class="font-medium">Order Created</p>
+                    <p class="max-md:text-xs font-medium">Created</p>
                 </div>
-                <div class="flex flex-col gap-2 justify-center items-center">
+                <template v-if="order.status != 'CANCEL' && order.status != 'SUCCESS'">
+                    <div class="flex flex-col gap-2 justify-center items-center">
+                        <div
+                            class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
+                            <div class="rounded-full p-1 flex justify-center items-center bg-white">
+                                <i class="bx bx-check-double"></i>
+                            </div>
+                        </div>
+                        <p class="max-md:text-xs font-medium">Paided</p>
+                    </div>
+                    <div class="flex flex-col gap-2 justify-center items-center">
+                        <div
+                            class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
+                            <div class="rounded-full p-1 flex justify-center items-center bg-white">
+                                <i class="bx bx-package"></i>
+                            </div>
+                        </div>
+                        <p class="max-md:text-xs font-medium">Processed</p>
+                    </div>
+                    <div class="flex flex-col gap-2 justify-center items-center">
+                        <div
+                            class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
+                            <div class="rounded-full p-1 flex justify-center items-center bg-white">
+                                <i class="bx bxs-ship"></i>
+                            </div>
+                        </div>
+                        <p class="max-md:text-xs font-medium">Shipped</p>
+                    </div>
+                </template>
+                <div v-else-if="order.status === 'SUCCESS'" class="flex flex-col gap-2 justify-center items-center">
                     <div class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
                         <div class="rounded-full p-1 flex justify-center items-center bg-white">
-                            <i class="bx bx-check-double"></i>
+                            <i class='bx bxs-checkbox-checked'></i>
                         </div>
                     </div>
-                    <p class="font-medium">Order Paided</p>
+                    <p class="max-md:text-xs font-medium">Success</p>
                 </div>
-                <div class="flex flex-col gap-2 justify-center items-center">
+                <div v-else class="flex flex-col gap-2 justify-center items-center">
                     <div class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
                         <div class="rounded-full p-1 flex justify-center items-center bg-white">
-                            <i class="bx bx-package"></i>
+                            <i class="bx bx-x"></i>
                         </div>
                     </div>
-                    <p class="font-medium">Order Processed</p>
-                </div>
-                <div class="flex flex-col gap-2 justify-center items-center">
-                    <div class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
-                        <div class="rounded-full p-1 flex justify-center items-center bg-white">
-                            <i class="bx bxs-ship"></i>
-                        </div>
-                    </div>
-                    <p class="font-medium">Order Shipped</p>
+                    <p class="max-md:text-xs font-medium">Cancel</p>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script setup>
+import moment from "moment";
 const { order } = defineProps(["order"]);
 </script>

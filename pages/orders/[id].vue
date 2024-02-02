@@ -1,15 +1,16 @@
 <template>
     <div class="flex flex-col md:grid md:grid-cols-2 md:grid-rows-2 md:gap-12 p-4 w-full lg:w-3/4 mx-auto" v-if="order">
         <div class="col-span-2 row-span-2">
+            <NuxtLink :to="{ name: 'orders' }" class="text-primary">
+                <i class="bx bx-arrow-back text-2xl"></i>
+            </NuxtLink>
             <div class="font-medium text-xl flex flex-row justify-between items-center w-full">
                 <p>Status Order</p>
                 <p class="text-xs"> Updated at {{ moment(order.updatedAt).format('D/MM/y h:mm a') }}</p>
             </div>
             <div class="flex flex-col gap-4 w-full">
                 <div class="w-full rounded-full h-4 bg-black/10">
-                    <div class="bg-primary h-4 rounded-full"
-                        :class="{ 'w-[25%]': order.status === 'CREATED', 'w-[50%]': order.status === 'PENDING', 'w-[75%]': order.status === 'CONFIRMED', 'w-full': order.status === 'SUCCESS' }">
-                    </div>
+                    <div class="bg-primary h-4 rounded-full" :class="{ 'w-[25%]': order.status === 'CREATED', 'w-[50%]': order.status === 'PENDING', 'w-[75%]': order.status === 'CONFIRMED', 'w-full': order.status === 'SUCCESS' || order.status === 'SHIP' || order.status == 'CANCEL' }"></div>
                 </div>
                 <div class="flex flex-row justify-between items-center">
                     <div class="flex flex-col gap-2 justify-center items-center">
@@ -20,29 +21,50 @@
                         </div>
                         <p class="max-md:text-xs font-medium">Created</p>
                     </div>
-                    <div class="flex flex-col gap-2 justify-center items-center">
+                    <template v-if="order.status != 'CANCEL' && order.status != 'SUCCESS'">
+                        <div class="flex flex-col gap-2 justify-center items-center">
+                            <div
+                                class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
+                                <div class="rounded-full p-1 flex justify-center items-center bg-white">
+                                    <i class="bx bx-check-double"></i>
+                                </div>
+                            </div>
+                            <p class="max-md:text-xs font-medium">Paided</p>
+                        </div>
+                        <div class="flex flex-col gap-2 justify-center items-center">
+                            <div
+                                class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
+                                <div class="rounded-full p-1 flex justify-center items-center bg-white">
+                                    <i class="bx bx-package"></i>
+                                </div>
+                            </div>
+                            <p class="max-md:text-xs font-medium">Processed</p>
+                        </div>
+                        <div class="flex flex-col gap-2 justify-center items-center">
+                            <div
+                                class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
+                                <div class="rounded-full p-1 flex justify-center items-center bg-white">
+                                    <i class="bx bxs-ship"></i>
+                                </div>
+                            </div>
+                            <p class="max-md:text-xs font-medium">Shipped</p>
+                        </div>
+                    </template>
+                    <div v-else-if="order.status === 'SUCCESS'" class="flex flex-col gap-2 justify-center items-center">
                         <div class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
                             <div class="rounded-full p-1 flex justify-center items-center bg-white">
-                                <i class="bx bx-check-double"></i>
+                                <i class='bx bxs-checkbox-checked'></i>
                             </div>
                         </div>
-                        <p class="max-md:text-xs font-medium">Paided</p>
+                        <p class="max-md:text-xs font-medium">Success</p>
                     </div>
-                    <div class="flex flex-col gap-2 justify-center items-center">
+                    <div v-else class="flex flex-col gap-2 justify-center items-center">
                         <div class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
                             <div class="rounded-full p-1 flex justify-center items-center bg-white">
-                                <i class="bx bx-package"></i>
+                                <i class="bx bx-x"></i>
                             </div>
                         </div>
-                        <p class="max-md:text-xs font-medium">Processed</p>
-                    </div>
-                    <div class="flex flex-col gap-2 justify-center items-center">
-                        <div class="bg-primary p-2 rounded-md w-min hover:-translate-y-2 duration-150 transition-transform">
-                            <div class="rounded-full p-1 flex justify-center items-center bg-white">
-                                <i class="bx bxs-ship"></i>
-                            </div>
-                        </div>
-                        <p class="max-md:text-xs font-medium">Shipped</p>
+                        <p class="max-md:text-xs font-medium">Cancel</p>
                     </div>
                 </div>
             </div>
@@ -83,7 +105,8 @@
                     <p> {{ order.shippingAddress.postal_code }} </p>
                 </div>
             </div>
-            <button class="hover py-3 font-medium" @click="refresh">
+            <button class="hover py-3 font-medium" @click="refresh"
+                v-if="order.status != 'CANCEL' && order.status != 'SUCCESS'">
                 <i v-if="pending" class="bx bx-loader-alt bx-spin"></i>
                 <p v-else>
                     Refresh

@@ -49,18 +49,18 @@ useHead({
 });
 
 useSeoMeta({
-    title: `${product.value?.name} | Flux`,
-    ogImage: product.value?.image,
-    ogImageAlt: product.value?.name,
-    ogTitle: `${product.value?.name}`,
-    twitterTitle: `${product.value?.name}`,
-    description: product.value?.description,
-    ogDescription: product.value?.description,
-    twitterDescription: product.value?.description,
+    title: () => `${product.value?.name || ""} | Flux`,
+    ogImage: () => product.value?.image || "",
+    ogImageAlt: () => product.value?.name || "",
+    ogTitle: () => `${product.value?.name || ""}`,
+    twitterTitle: () => `${product.value?.name || ""}`,
+    description: () => product.value?.description || "",
+    ogDescription: () => product.value?.description || "",
+    twitterDescription: () => product.value?.description || "",
     ogType: "website",
     ogSiteName: "Flux",
     applicationName: "Flux",
     twitterCard: "app",
-    twitterImage: product.value?.images,
+    twitterImage: () => product.value?.images || "",
 })
 </script>

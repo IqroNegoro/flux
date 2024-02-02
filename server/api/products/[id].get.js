@@ -3,6 +3,9 @@ import isMongoId from "validator/lib/isMongoId.js"
 import unescape from "validator/lib/unescape.js";
 
 export default defineEventHandler(async e => {
+    console.log("loheh");
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    console.log("arerere");
     const {id} = getRouterParams(e, "id");
    
     if (!isMongoId(id)) throw createError({

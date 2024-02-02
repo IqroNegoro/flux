@@ -8,6 +8,7 @@ export const getCarts = async options => await useApi("carts", {
 export const addToCart = async productId => await useApi(`carts`, {
     method: "POST",
     immediate: false,
+    lazy: true,
     body: {productId},
     key: "add-to-cart"
 });

@@ -15,6 +15,7 @@ const notification = useNotification();
 .pop-down-leave-active {
   transition: all 0.4s;
 }
+
 .pop-down-enter-from,
 .pop-down-leave-to {
   opacity: 0;
@@ -25,6 +26,7 @@ const notification = useNotification();
 .page-leave-active {
   transition: all 0.4s;
 }
+
 .page-enter-from,
 .page-leave-to {
   opacity: 0;
