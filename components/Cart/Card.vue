@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-row gap-4 p-2 w-full relative cursor-pointer rounded-md" :class="{'bg-gray-100': checkout.has(cart.id)}" @click="checkout.addToCheckout(cart)">
+    <div class="flex flex-row gap-4 p-2 w-full relative cursor-pointer rounded-md" :class="{'bg-gray-100': checkout.has(cart.id)}" @click="checkout.addToItems(cart)">
         <button class="absolute top-0 right-1" @click.stop="handleDelCart" :disabled="pending">
             <i v-if="pending" class="bx bx-loader-alt bx-spin"></i>
             <i v-else class="bx bx-x"></i>
@@ -52,7 +52,6 @@ const handleDelCart = async () => {
 }
 
 const handleInc = async () => {
-    console.trace(cart.quantity, "increment")
     await executeInc();
     // if (errorInc.value) {
     //     console.trace(errorInc.value);
@@ -62,7 +61,6 @@ const handleInc = async () => {
 }
 
 const handleDec = async () => {
-    console.trace(cart.quantity, "decrement")
     if (cart.quantity == 1) {
         return await handleDelCart();
     }

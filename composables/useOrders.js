@@ -17,3 +17,10 @@ export const getOrder = async id => await useApi(`orders/${id}`, {
     default: () => {},
     key: `get-${id}-order`
 });
+
+export const getOrderStatus = async orderId => await useApi(`orders/status/${orderId}`, {
+    lazy: true,
+    immediate: false,
+    default: () => {},
+    key: `get-${orderId}-status`
+})

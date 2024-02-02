@@ -3,7 +3,7 @@ import isMongoId from "validator/lib/isMongoId.js";
 
 export default defineEventHandler(async e => {
     const {productId} = await readBody(e);
-    console.log(productId)
+
     if (!isMongoId(productId)) throw createError({
         statusCode: 400,
         message: "The ID is not MongoID",

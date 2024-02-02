@@ -5,7 +5,10 @@ export default defineEventHandler(async e => {
     console.log(getRequestURL(e).pathname)
     if (!(e.path.search(/api/gi) >= 0)) return;
 
-    const {token, refresh} = parseCookies(e);
+    const {
+        token,
+        refresh
+    } = parseCookies(e);
 
     let user = undefined;
     const config = useRuntimeConfig();
@@ -20,17 +23,15 @@ export default defineEventHandler(async e => {
                 token: refresh
             }
         });
-        console.log(`user`, userToken, `is expired ?`, userToken?.expired >= + new Date());
+
         if (userToken && userToken?.expired >= +new Date()) {
             user = await prisma.users.findUnique({
                 where: {
                     id: userToken.userId
                 },
             });
-            
-            delete user.password;
 
-            const config = useRuntimeConfig();
+            delete user.password;
 
             const token = jwt.sign(user, config.secret, {
                 expiresIn: "15m"
@@ -39,7 +40,7 @@ export default defineEventHandler(async e => {
             const refresh = jwt.sign(user, config.refresh, {
                 expiresIn: "1d"
             });
-    
+
             const saving = await prisma.tokens.upsert({
                 where: {
                     userId: userToken.userId
@@ -56,17 +57,17 @@ export default defineEventHandler(async e => {
             });
 
             console.log("new refresh token invoked", saving)
-        
+
             setCookie(e, "token", token, {
                 maxAge: 60 * 15,
-                httpOnly: true,
-                secure: true,
+                httpOnly: process.env.NODE_ENV === 'production',
+                secure: process.env.NODE_ENV === 'production',
             });
-            
+
             setCookie(e, "refresh", refresh, {
                 maxAge: 60 * 60 * 24,
-                httpOnly: true,
-                secure: true,
+                httpOnly: process.env.NODE_ENV === 'production',
+                secure: process.env.NODE_ENV === 'production'
             });
             console.log("cooke set!")
         }

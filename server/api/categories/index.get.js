@@ -36,6 +36,6 @@ export default defineEventHandler(async e => {
             prev: page > 1
         }
     }
-    console.log(result)
+
     return result;
 })

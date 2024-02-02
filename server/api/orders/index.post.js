@@ -1,15 +1,15 @@
 import prisma from "~/server/db";
-import {v4} from "uuid";
+import {
+    v4
+} from "uuid";
 
 export default defineEventHandler(async e => {
     const data = await readBody(e);
 
-    const products = data.items.map(v => v.product?.id);
-
-    const item_details = await prisma.products.findMany({
+    const products = await prisma.products.findMany({
         where: {
             id: {
-                in: products
+                in: data.items.map(v => v.product.id)
             }
         },
         select: {
@@ -18,14 +18,17 @@ export default defineEventHandler(async e => {
             name: true,
             weight: true,
             price: true,
-            description: true
+            description: true,
         }
-    })
+    });
 
-    const gross_amount = item_details.reduce((prev, next, i) => prev + (next.price * data.items[i].quantity), 0);
+    const item_details = products.map(v => ({...v, quantity: data.items.find(x => x.product.id == v.id).quantity}))
+
+    const gross_amount = item_details.reduce((prev, next, i) => prev + (next.price * next.quantity), 0);
 
     if (gross_amount != data.total) throw createError({
-        statusCode: 500
+        statusCode: 500,
+        message: "Something wrong, try again"
     });
 
     let parameter = {};
@@ -59,11 +62,14 @@ export default defineEventHandler(async e => {
         first_name: e.context.auth.name,
         phone: data.shipping_address.phone,
         address: data.shipping_address.address,
-        shipping_address: {...data.shipping_address, city: data.shipping_address.city.city_name}
+        shipping_address: {
+            ...data.shipping_address,
+            city: data.shipping_address.city.city_name
+        }
     }
 
-    parameter.item_details = item_details.map((v, i) => ({...v, quantity: data.items[i].quantity}))
-    
+    parameter.item_details = item_details;
+
     parameter.custom_expiry = {
         expiry_duration: 1,
         unit: "day"
@@ -82,15 +88,32 @@ export default defineEventHandler(async e => {
                 method: res.payment_type,
                 paymentStatus: res.transaction_status,
                 midtransResponse: res,
-                shippingAddress: {...data.shipping_address, city: data.shipping_address.city.city_name}
+                shippingAddress: {
+                    ...data.shipping_address,
+                    city: data.shipping_address.city.city_name
+                }
             }
         });
+
+        const carts = await prisma.carts.deleteMany({
+            where: {
+                id: {
+                    in: data.items.map(v => v.id)
+                }
+            }
+        });
+
         setResponseHeaders(e, 201);
+
         return {
             message: "Order created",
             data: order.id,
         }
-    }).catch(({ApiResponse}) => {
+    }).catch((err) => {
+        console.log(err)
+        const {
+            ApiResponse
+        } = err;
         let error = null;
         if (ApiResponse.status_code == 505 || ApiResponse.status_code == 503) {
             error = {

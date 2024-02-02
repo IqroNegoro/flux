@@ -3,7 +3,8 @@
         <div class="md:w-96 w-full h-full bg-white p-2 flex flex-col justify-between">
             <div class="flex justify-between">
                 <h1 class="font-semibold tracking-wide text-xl">Filter products</h1>
-                <button class="hover:bg-black/25 px-2 py-1 rounded-full flex justify-center items-center" @click="$emit('closeFilter')">
+                <button class="hover:bg-black/25 px-2 py-1 rounded-full flex justify-center items-center"
+                    @click="$emit('closeFilter')">
                     <i class="bx bx-x text-xl"></i>
                 </button>
             </div>
@@ -11,13 +12,19 @@
                 <div class="flex flex-col gap-2">
                     <p class="text-lg font-medium">Sort by</p>
                     <div class="flex flex-row gap-2 text-sm font-medium pb-2 flex-wrap">
-                        <button class="border border-primary rounded-sm px-3 py-1" :class="{'bg-primary text-white': filter.orderBy == 'createdAt'}" @click="filter.orderBy = 'createdAt', filter.type = 'desc'">
+                        <button class="border border-primary rounded-sm px-3 py-1"
+                            :class="{ 'bg-primary text-white': filter.orderBy == 'createdAt' }"
+                            @click="filter.orderBy = 'createdAt', filter.type = 'desc'">
                             Newest
                         </button>
-                        <button class="border border-primary rounded-sm px-3 py-1" :class="{'bg-primary text-white': filter.orderBy == 'price' && filter.type == 'desc'}" @click="filter.orderBy = 'price', filter.type = 'desc'">
+                        <button class="border border-primary rounded-sm px-3 py-1"
+                            :class="{ 'bg-primary text-white': filter.orderBy == 'price' && filter.type == 'desc' }"
+                            @click="filter.orderBy = 'price', filter.type = 'desc'">
                             Highest price
                         </button>
-                        <button class="border border-primary rounded-sm px-3 py-1" :class="{'bg-primary text-white': filter.orderBy == 'price' && filter.type == 'asc'}" @click="filter.orderBy = 'price', filter.type = 'asc'">
+                        <button class="border border-primary rounded-sm px-3 py-1"
+                            :class="{ 'bg-primary text-white': filter.orderBy == 'price' && filter.type == 'asc' }"
+                            @click="filter.orderBy = 'price', filter.type = 'asc'">
                             Lower price
                         </button>
                     </div>
@@ -32,7 +39,8 @@
                         -
                         <div class="flex flex-row justify-center items-center gap-1 bg-black/10 px-2 text-sm">
                             <p class="font-medium">Rp</p>
-                            <input type="number" class="w-full bg-transparent" placeholder="Highest" v-model="filter.highest">
+                            <input type="number" class="w-full bg-transparent" placeholder="Highest"
+                                v-model="filter.highest">
                         </div>
                     </div>
                 </div>
@@ -41,7 +49,10 @@
                     <div class="flex flex-row items-center gap-2 font-medium pb-2 overflow-x-auto">
                         <i v-if="pendingCategories" class="bx bx-loader-alt bx-spin"></i>
                         <template v-else>
-                            <button class="border border-primary rounded-sm px-3 py-1" :class="{'bg-primary text-white': filter.categoryIds == category.id}" v-for="category in categories.data" :key="category.id" @click="filter.categoryIds == category.id ? filter.categoryIds = '' : filter.categoryIds = category.id">
+                            <button class="border border-primary rounded-sm px-3 py-1"
+                                :class="{ 'bg-primary text-white': filter.categoryIds == category.id }"
+                                v-for="category in categories.data" :key="category.id"
+                                @click="filter.categoryIds == category.id ? filter.categoryIds = '' : filter.categoryIds = category.id">
                                 {{ category.name }}
                             </button>
                         </template>
@@ -49,7 +60,8 @@
                 </div>
             </div>
             <div class="flex flex-row gap-2">
-                <button class="text-white font-medium w-full py-3 text-center rounded-sm hover" @click="$emit('setFilter', filter)">
+                <button class="text-white font-medium w-full py-3 text-center rounded-sm hover"
+                    @click="$emit('setFilter', filter)">
                     Apply
                 </button>
                 <button class="text-white font-medium w-full py-3 text-center rounded-sm hover" @click="reset">
@@ -80,4 +92,5 @@ const reset = () => {
     filter.value.type = "asc";
     emit("resetFilter")
 }
+// KURANGIN STOCK PRODUCT SAAT CHECKOUT, BAGUSIN VIEW PRODUCTS, TAMBAH 4 IMAGES PRODUCTS, CANCEL ORDERS, SEARCH PRODUCTS
 </script>

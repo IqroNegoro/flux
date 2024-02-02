@@ -1,27 +1,30 @@
 export const useCheckout = defineStore("checkout", ({
     state: () => ({
-        checkout: [],
+        items: [],
     }),
     actions: {
-        addToCheckout(cart) {
-            const i = this.checkout.findIndex(v => v.id === cart.id);
+        addToItems(cart) {
+            const i = this.items.findIndex(v => v.id === cart.id);
             if (i >= 0) {
-                this.checkout.splice(i, 1);
+                this.items.splice(i, 1);
             } else {
-                this.checkout.push(cart);
+                this.items.push(cart);
             }
         },
         has(id) {
-            return this.checkout.findIndex(v => v.id === id) >= 0;
+            return this.items.findIndex(v => v.id === id) >= 0;
         },
         qty(cart) {
-            const item = this.checkout.find(v => v.id == cart.id);
+            const item = this.items.find(v => v.id == cart.id);
             if (item) {
                 item.quantity = cart.quantity
             }
         },
         delete(id) {
-            this.checkout = this.checkout.filter(v => v.id != id)
+            this.items = this.items.filter(v => v.id != id)
+        },
+        clear() {
+            this.items = [];
         }
     }
 }))

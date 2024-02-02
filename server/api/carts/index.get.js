@@ -24,6 +24,6 @@ export default defineEventHandler(async e => {
         skip: parseInt(skip) || 0,
         take: parseInt(limit) || 10
     });
-    console.log(carts)
+
     return carts;
 })

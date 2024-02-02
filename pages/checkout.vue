@@ -5,7 +5,7 @@
         <div class="w-full flex justify-center flex-col md:flex-row items-center md:items-start gap-8 lg:grid lg:grid-cols-2 lg:grid-rows-2">
             <div class="w-full flex flex-col gap-4 rounded-sm">
                 <p class="text-xl font-medium">Products</p>
-                <CartCheckoutCard v-for="cart in checkout.checkout" :key="cart.id" :cart="cart" />
+                <CartCheckoutCard v-for="cart in checkout.items" :key="cart.id" :cart="cart" />
             </div>
             <div class="w-full flex flex-col gap-8">
                 <h1 class="font-medium text-xl">Purchase Total: {{ formatRp(total) }} </h1>
@@ -166,7 +166,7 @@ const pending = ref(false);
 const err = ref(false);
 const inputErr = ref(false);
 
-const total = computed(() => checkout.checkout.reduce((prev, next) => prev + (next.product?.price * next.quantity),0));
+const total = computed(() => checkout.items.reduce((prev, next) => prev + (next.product?.price * next.quantity),0));
 
 const { data: provinces, pending: pendingProvince, execute: executeProvince } = await useFetch("/api/province", {
     immediate: false,
@@ -201,7 +201,7 @@ const handleCreateOrder = async () => {
     const { data, error } = await createOrder({
         payment_type: payment_type.value,
         payment_provider: payment_provider.value,
-        items: checkout.checkout,
+        items: JSON.parse(JSON.stringify(checkout.items)),
         total: total.value,
         address: address.value,
         shipping_address: {
@@ -222,13 +222,12 @@ const handleCreateOrder = async () => {
         if (error.value.statusCode === 400) {
             inputErr.value = "Cannot create order with choosed payment, please use another payment provider"
         }
-        console.log(error.value);
         err.value = error.value.data;
         return;
     }
 
     notification.success("Order created");
-
+    checkout.clear();
     return await navigateTo({name: "orders-id", params: {id: data.value.data}})
     
 }

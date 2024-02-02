@@ -26,7 +26,5 @@ export default defineEventHandler(async e => {
 
     product.description = unescape(product.description)
     
-    console.log(product.description)
-
     return product
 })

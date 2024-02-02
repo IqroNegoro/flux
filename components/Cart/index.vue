@@ -26,12 +26,12 @@
                     <CartSkeleton v-for="i in 5" :key="i" />
                 </template>
                 <div class="absolute bottom-0 bg-primary font-medium text-white py-1 px-3 rounded-full">
-                    {{ checkout.checkout.length }}
+                    {{ checkout.items.length }}
                 </div>
             </div>
             <div class="w-full pr-2 pt-2">
                 <p class="text-center font-medium text-sm">Click the item want to checkout</p>
-                <NuxtLink :to="{name: 'checkout'}" @click="unauthenticated = false" :class="{'pointer-events-none bg-secondary': !checkout.checkout.length}" class="w-full block text-center font-medium text-white py-2 bg-primary transition-colors duration-150">
+                <NuxtLink :to="{name: 'checkout'}" @click="unauthenticated = false" :class="{'pointer-events-none bg-secondary': !checkout.items.length}" class="w-full block text-center font-medium text-white py-2 bg-primary transition-colors duration-150">
                     Checkout
                 </NuxtLink>
             </div>
@@ -55,7 +55,6 @@ const { data, pending, error, refresh } = await getCarts({
 });
 
 watch(data, data => {
-    console.log(data)
     cartLists.value = [...cartLists.value, ...data]
 });
 
