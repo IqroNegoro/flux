@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full flex flex-col gap-4 min-h-96 rounded-md bg-gray-50 p-4">
+    <div class="w-full flex flex-col gap-4 min-h-96 rounded-md bg-gray-100 p-4">
         <div class="flex flex-row justify-between">
             <h1><span class="font-medium">Order ID</span> {{ order.orderId }}</h1>
             <NuxtLink :to="{name: 'orders-id', params: {id: order.id}}" class="border border-primary rounded-sm text-center font-medium px-3 py-1" :class="{'bg-primary text-white': order.paymentStatus == 'settlement'}">
@@ -7,7 +7,9 @@
             </NuxtLink>
         </div>
         <div class="flex flex-row gap-2 overflow-x-auto pb-2">
-            <OrderCard v-for="product in order.products" :key="product.id" :product="product" />
+            <NuxtLink :to="{name: 'products-id', params: {id: product.id}}" v-for="product in order.products" :key="product.id" >
+                <img :src="product?.image" :alt="product.name" class="aspect-square w-32 h-32 object-cover object-center rounded-md">
+            </NuxtLink>
         </div>
         <div class="w-full flex justify-between items-start">
             <div>

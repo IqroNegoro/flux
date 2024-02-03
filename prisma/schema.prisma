@@ -143,6 +143,7 @@ type ProductsTransaction {
   quantity Int @default(0)
   description String? @default("Product doesn't have description")
   categories Category[]
+  isRated Boolean @default(false)
 }
 
 type Category {

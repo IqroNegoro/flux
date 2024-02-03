@@ -71,7 +71,7 @@
         </div>
         <div class="flex flex-col gap-4">
             <h1 class="text-xl font-medium">Products</h1>
-            <OrderCard v-for="product in order.products" :key="product.id" :product="product" />
+            <OrderCard v-for="product in order.products" :key="product.id" :product="product" :status="order.status" @rated="data => order.products.find(v => v.id == data.productId).isRated = true" />
         </div>
         <div class="flex flex-col gap-4">
             <div class="flex flex-col gap-1">

@@ -10,7 +10,7 @@
                 <p class="font-medium text-lg">
                     {{ cart.product?.name }}
                 </p>
-                <p>
+                <p class="text-xs">
                     {{ cart.product?.sub }}
                 </p>
             </div>
@@ -32,6 +32,7 @@
 <script setup>
 const user = useUser();
 const checkout = useCheckout();
+const notification = useNotification();
 const emit = defineEmits(["deleteCart", "qty"]);
 const { cart } = defineProps(["cart"]);
 
@@ -44,18 +45,24 @@ pendingDec.value = false;
 
 const handleDelCart = async () => {
     await execute();
-    // if (error.value) {
-    //     console.log(error.value.data)
-    // }
+    if (error.value) {
+        notification.error("Something wrong, try again")
+        return;
+    }
     checkout.delete(data.value.id);
     emit("deleteCart", data.value.id);
 }
 
 const handleInc = async () => {
     await executeInc();
-    // if (errorInc.value) {
-    //     console.trace(errorInc.value);
-    // }
+    if (errorInc.value) {
+        if (errorInc.value.statusCode == 409) {
+            notification.error(errorInc.value.data.message);
+            return;
+        }
+        notification.error("Something went wrong");
+        return;
+    }
     checkout.qty(inc.value);
     emit("qty", inc.value);
 }
@@ -65,9 +72,14 @@ const handleDec = async () => {
         return await handleDelCart();
     }
     await executeDec();
-    // if (errorDec.value) {
-        //     console.trace(errorDec.value);
-        // }
+    if (errorDec.value) {
+        if (errorDec.value.statusCode == 409) {
+            notification.error(errorDec.value.data.message);
+            return;
+        }
+        notification.error("Something went wrong");
+        return;
+    }
     checkout.qty(dec.value);
     emit("qty", dec.value);
 }

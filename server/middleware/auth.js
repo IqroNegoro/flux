@@ -5,10 +5,7 @@ export default defineEventHandler(async e => {
     console.log(getRequestURL(e).pathname)
     if (!(e.path.search(/api/gi) >= 0)) return;
 
-    const {
-        token,
-        refresh
-    } = parseCookies(e);
+    const { token, refresh } = parseCookies(e);
 
     let user = undefined;
     const config = useRuntimeConfig();

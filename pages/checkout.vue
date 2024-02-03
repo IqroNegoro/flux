@@ -218,11 +218,16 @@ const handleCreateOrder = async () => {
     pending.value = false;
     
     if (error.value) {
-        notification.error("Error creating your order, try again")
+        if (error.value.statusCode === 409) {
+            notification.error(error.value.data.message);
+            return;
+        }
         if (error.value.statusCode === 400) {
-            inputErr.value = "Cannot create order with choosed payment, please use another payment provider"
+            notification.error("Cannot create order with choosed payment, please use another payment provider")
+            return;
         }
         err.value = error.value.data;
+        notification.error("Error creating your order, try again")
         return;
     }
 

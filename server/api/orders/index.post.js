@@ -1,25 +1,47 @@
 import prisma from "~/server/db";
-import {
-    v4
-} from "uuid";
+import { v4 } from "uuid";
 
 export default defineEventHandler(async e => {
     const data = await readBody(e);
 
-    const products = await prisma.products.findMany({
-        where: {
-            id: {
-                in: data.items.map(v => v.product.id)
+    // const products = await prisma.products.findMany({
+    //     where: {
+    //         id: {
+    //             in: data.items.map(v => v.product.id)
+    //         }
+    //     },
+    //     select: {
+    //         id: true,
+    //         image: true,
+    //         name: true,
+    //         weight: true,
+    //         price: true,
+    //         description: true,
+    //     }
+    // });
+
+    const products = await prisma.$transaction(
+        data.items.map(v => ({id: v.product.id, quantity: v.quantity})).map(v => prisma.products.findUnique({
+            where: {
+                id: v.id,
+                stock: {
+                    gte: v.quantity
+                }
+            },
+            select: {
+                id: true,
+                image: true,
+                name: true,
+                weight: true,
+                price: true,
+                description: true,
             }
-        },
-        select: {
-            id: true,
-            image: true,
-            name: true,
-            weight: true,
-            price: true,
-            description: true,
-        }
+        }))
+    );
+
+    if (products.includes(null)) throw createError({ // check if quantity at checkout is not exceed
+        statusCode: 409,
+        message: "Sorry but some product cannot be checkout"
     });
 
     const item_details = products.map(v => ({...v, quantity: data.items.find(x => x.product.id == v.id).quantity}))

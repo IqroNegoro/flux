@@ -12,6 +12,28 @@ export default defineEventHandler(async e => {
         }
     });
 
+    const checkQty = await prisma.carts.findUnique({
+        where: {
+            productId_userId: {
+                productId,
+                userId: e.context.auth.id
+            }
+        },
+        select: {
+            product: {
+                select: {
+                    stock: true
+                }
+            },
+            quantity: true
+        }
+    });
+    
+    if (checkQty && checkQty.quantity + 1 > checkQty.product.stock) throw createError({
+        statusCode: 409,
+        message: "Exceed the product stock"
+    });
+
     const cart = await prisma.carts.upsert({
         where: {
             productId_userId: {
@@ -22,13 +44,13 @@ export default defineEventHandler(async e => {
         create: {
             productId,
             userId: e.context.auth.id,
-            quantity: 1
+            quantity: 1,
         },
         update: {
             quantity: {
                 increment: 1
             }
-        }
+        },
     });
 
     return cart;
