@@ -86,14 +86,21 @@
                 </p>
                 <p class="font-medium">Method</p>
                 <p class="text-sm"> {{ pascal(order.method) }} </p>
-                <template v-if="order.paymentStatus != 'settlement'">
-                    <p class="font-medium">Bank</p>
-                    <p class="text-sm"> {{ capitalize(order.midtransResponse.va_numbers[0].bank) }} </p>
-                    <p class="font-medium">VA Number</p>
-                    <p class="text-sm"> {{ order.midtransResponse.va_numbers[0].va_number }} </p>
-                    <p class="font-medium">Paid before</p>
-                    <p class="text-sm"> {{ moment(order.midtransResponse.expiry_time).format("D MMMM YYYY, hh:mm:ss A") }}
-                    </p>
+                <template v-if="order.method === 'bank_transfer'">
+                    <template v-if="order.paymentStatus != 'settlement'">
+                        <p class="font-medium">Bank</p>
+                        <p class="text-sm"> {{ capitalize(order.midtransResponse.va_numbers[0].bank) }} </p>
+                        <p class="font-medium">VA Number</p>
+                        <p class="text-sm"> {{ order.midtransResponse.va_numbers[0].va_number }} </p>
+                    </template>
+                </template>
+                <template v-else>
+                    <p class="font-medium">QR</p>
+                    <p class="text-sm"> {{ order.midtransResponse.actions[0].url }} (sandbox) </p>
+                    <img :src="order.midtransResponse.actions[0].url" alt="">
+                    <NuxtLink external="true" target="_blank" :to="order.midtransResponse.actions[1].url" class="flex flex-row border border-primary justify-center items-center py-2">
+                        Pay at <img src="/images/gojek.png" alt="" class="w-24">
+                    </NuxtLink>
                 </template>
             </div>
             <div class="flex flex-col gap-1">
