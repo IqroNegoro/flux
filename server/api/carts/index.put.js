@@ -28,6 +28,19 @@ export default defineEventHandler(async e => {
             quantity: true
         }
     });
+
+    if (!checkQty) {
+        const product = await prisma.products.findUnique({
+            where: {
+                id: productId
+            }
+        });
+
+        if (!product.stock) throw createError({
+            statusCode: 409,
+            message: "Exceed the product stock"
+        })
+    }
     
     if (checkQty && checkQty.quantity + 1 > checkQty.product.stock) throw createError({
         statusCode: 409,

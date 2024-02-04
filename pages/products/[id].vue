@@ -1,5 +1,6 @@
 <template>
     <div class="flex justify-center w-full md:w-3/4 mx-auto flex-col p-4">
+        
         <ProductPageSkeleton v-if="pending" />
         <div v-else-if="error" class="flex justify-center items-center flex-col gap-2">
             <h1>Something wrong, try again</h1>
@@ -39,10 +40,13 @@
                         <div ref="descriptionContainer" @click="handleOverflowing" class="line-clamp-6 text-gray-500 font-light whitespace-pre-line" v-html="product.description"></div>
                         <button @click="handleOverflowing" v-if="isOverflowing && !showLess" class="w-max font-medium text-primary">Read More...</button>
                     </div>
-                    <button class="p-2 h-12 md:w-48 flex justify-center items-center bg-secondary hover:bg-primary transition-colors duration-150 font-medium text-white rounded-sm" @click="user.authenticated ? handleAdd() : unauthenticated = true">
+                    <button class="p-2 h-12 md:w-48 flex justify-center items-center transition-colors duration-150 font-medium rounded-sm" @click="user.authenticated ? handleAdd() : unauthenticated = true" :disabled="!product.stock" :class="{'border border-primary bg-transparent text-primary': !product.stock, 'bg-secondary hover:bg-primary text-white': product.stock}">
                         <i v-if="cartPending" class="bx bx-loader-alt bx-spin"></i>
+                        <p v-else-if="!product.stock">
+                            Out of Stock
+                        </p>
                         <p v-else>
-                            Add to cart
+                            Add to Cart
                         </p>
                     </button>
                 </div>
