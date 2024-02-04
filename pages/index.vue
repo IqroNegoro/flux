@@ -4,7 +4,7 @@
         <NuxtLink :to="{name: 'index'}" class="text-xl">Flux</NuxtLink>
         <div class="flex flex-row gap-2">
           <NuxtLink :to="{name: 'shop'}" class="border border-primary px-4 py-1 hover:bg-primary hover:text-white">Shop</NuxtLink>
-          <NuxtLink :to="{name: 'register'}" class="bg-primary px-4 py-1 text-white rounded-sm">Register</NuxtLink>
+          <!-- <NuxtLink :to="{name: 'register'}" class="bg-primary px-4 py-1 text-white rounded-sm">Register</NuxtLink> -->
         </div>
       </nav>
       <div class="w-full h-screen flex snap-center justify-center md:justify-around items-center flex-col md:flex-row gap-4">
@@ -13,7 +13,8 @@
           <p class="text-secondary font-light">Take a moment and discover the magic on our site</p>
           <div class="flex flex-row gap-2">
             <NuxtLink :to="{name: 'shop'}" class="border border-primary md:px-6 md:py-3 px-2 py-1 hover:bg-primary hover:text-white">Get Started <i class="bx bx-cart"></i> </NuxtLink>
-            <NuxtLink :to="{name: 'register'}" class="bg bg-primary text-white rounded-sm md:px-6 md:py-3 px-2 py-1">Register</NuxtLink>
+            <!-- <NuxtLink :to="{name: 'register'}" class="bg bg-primary text-white rounded-sm md:px-6 md:py-3 px-2 py-1">Register</NuxtLink> --> 
+            <!-- weird link -->
           </div>
         </div>
         <div class="w-full flex justify-center items-center">

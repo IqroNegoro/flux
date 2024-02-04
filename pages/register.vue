@@ -40,7 +40,7 @@
 </template>
 <script setup>
 import { toTypedSchema } from "@vee-validate/yup";
-import {object, string} from "yup";
+import { object, string } from "yup";
 
 const { values, defineField, errors, setErrors, validate } = useForm({
     validationSchema: toTypedSchema(object({
@@ -70,8 +70,6 @@ const [password, passwordAttr] = defineField("password", {
     validateOnModelUpdate: false,
     validateOnInput: false
 })
-
-const user = useUser();
 
 const pendingRegister = ref(false);
 const errorRegister = ref(false);
