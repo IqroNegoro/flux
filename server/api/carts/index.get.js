@@ -14,7 +14,7 @@ export default defineEventHandler(async e => {
                     id: true,
                     name: true,
                     sub: true,
-                    image: true,
+                    images: true,
                     description: true,
                     price: true,
                 }

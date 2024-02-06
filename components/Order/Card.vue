@@ -2,7 +2,7 @@
     <div class="flex flex-col gap-4 p-2 relative" :class="{'w-full': $route.name != 'orders', 'shrink-0': $route.name == 'orders'}">
         <div class="flex flex-row gap-4 p-2 w-full">
             <NuxtLink :to="{name: 'products-id', params: {id: product?.id}}" class="w-48">
-                <img :src="product?.image" :alt="product?.name" class="w-full aspect-square object-cover object-center rounded-md">
+                <img :src="product?.images[0]" :alt="product?.name" class="w-full aspect-square object-cover object-center rounded-md">
             </NuxtLink>
             <div class="flex flex-col justify-between items-start w-full" v-if="$route.name != 'orders'">
                 <div>

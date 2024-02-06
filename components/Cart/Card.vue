@@ -4,7 +4,7 @@
             <i v-if="pending" class="bx bx-loader-alt bx-spin"></i>
             <i v-else class="bx bx-x"></i>
         </button>
-        <img :src="cart.product?.image" alt="" class="aspect-square w-32 object-cover rounded-md">
+        <img :src="cart.product?.images[0]" alt="" class="aspect-square w-32 object-cover rounded-md">
         <div class="flex flex-col justify-between items-start w-full">
             <div>
                 <p class="font-medium text-lg">

@@ -8,7 +8,7 @@
         </div>
         <div class="flex flex-row gap-2 overflow-x-auto pb-2">
             <NuxtLink :to="{name: 'products-id', params: {id: product.id}}" v-for="product in order.products" :key="product.id" >
-                <img :src="product?.image" :alt="product.name" class="aspect-square w-32 h-32 object-cover object-center rounded-md">
+                <img :src="product?.images[0]" :alt="product.name" class="aspect-square w-32 h-32 object-cover object-center rounded-md">
             </NuxtLink>
         </div>
         <div class="w-full flex justify-between items-start">

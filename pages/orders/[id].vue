@@ -99,7 +99,7 @@
                     <p class="text-sm"> {{ order.midtransResponse.actions[0].url }} (sandbox) </p>
                     <img :src="order.midtransResponse.actions[0].url" alt="">
                     <NuxtLink external="true" target="_blank" :to="order.midtransResponse.actions[1].url" class="flex flex-row border border-primary justify-center items-center py-2">
-                        Pay at <img src="/images/gojek.png" alt="" class="w-24">
+                        Pay at <img src="/img/gojek.png" alt="" class="w-24">
                     </NuxtLink>
                 </template>
             </div>

@@ -30,7 +30,7 @@ export default defineEventHandler(async e => {
             },
             select: {
                 id: true,
-                image: true,
+                images: true,
                 name: true,
                 weight: true,
                 price: true,

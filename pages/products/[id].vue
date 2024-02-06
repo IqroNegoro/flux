@@ -13,19 +13,19 @@
         <template v-else>
             <div class="flex flex-col md:flex-row">
                 <div class="flex flex-col md:w-[40rem] gap-2">
-                    <img :src="product.image" :alt="product.name" fetchpriority="high" class="w-full rounded-md aspect-square object-center object-cover">
+                    <img :src="product.images[0]" :alt="product.name" fetchpriority="high" class="w-full rounded-md aspect-square object-center object-cover">
                     <div class="grid grid-cols-4 grid-rows-1 gap-2">
-                        <button>
-                            <img :src="product.image" :alt="product.name" class="rounded-md aspect-square object-center object-cover">
+                        <button v-if="product.images[1]" @click="[product.images[0], product.images[1]] = [product.images[1], product.images[0]]">
+                            <img :src="product.images[1]" :alt="product.name" class="rounded-md aspect-square object-center object-cover">
                         </button>
-                        <button>
-                            <img :src="product.image" :alt="product.name" class="rounded-md aspect-square object-center object-cover">
+                        <button v-if="product.images[2]" @click="[product.images[0], product.images[2]] = [product.images[2], product.images[0]]">
+                            <img :src="product.images[2]" :alt="product.name" class="rounded-md aspect-square object-center object-cover">
                         </button>
-                        <button>
-                            <img :src="product.image" :alt="product.name" class="rounded-md aspect-square object-center object-cover">
+                        <button v-if="product.images[3]" @click="[product.images[0], product.images[3]] = [product.images[3], product.images[0]]">
+                            <img :src="product.images[3]" :alt="product.name" class="rounded-md aspect-square object-center object-cover">
                         </button>
-                        <button>
-                            <img :src="product.image" :alt="product.name" class="rounded-md aspect-square object-center object-cover">
+                        <button v-if="product.images[4]" @click="[product.images[0], product.images[4]] = [product.images[4], product.images[0]]">
+                            <img :src="product.images[4]" :alt="product.name" class="rounded-md aspect-square object-center object-cover">
                         </button>
                     </div>
                 </div>
