@@ -7,7 +7,7 @@ export default defineEventHandler(async e => {
 
     let { name, email, password } = await object({
         name: string().required(),
-        email: string().required().email(),
+        email: string().required().email("Email must be valid"),
         password: string().required()
     }).validate(body, {abortEarly: false}).catch(err => {
         let errors = {};

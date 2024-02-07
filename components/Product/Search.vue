@@ -1,9 +1,9 @@
 <template>
-    <div class="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center" @click.self="$emit('search')">
+    <div class="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center" @click.self="$emit('closeSearch')">
         <div class="w-full h-full md:w-96 md:h-3/4 bg-white rounded-md flex flex-col p-4 gap-8">
             <div class="flex justify-between">
                 <h1 class="font-medium text-2xl">Search product</h1>
-                <button class="hover:bg-black/25 flex justify-center items-center rounded-full px-2" @click="$emit('search')">
+                <button class="hover:bg-black/25 flex justify-center items-center rounded-full px-2" @click="$emit('closeSearch')">
                     <i class="bx bx-x"></i>
                 </button>
             </div>
@@ -16,14 +16,14 @@
                     <p class="text-center">0 Match</p>
                 </div>
                 <template v-else>
-                    <NuxtLink :to="{name: 'products-id', params: {id: product.id}}" class="flex flex-row gap-4 w-full" v-for="product in productLists" :key="product.id">
+                    <NuxtLink @click="$emit('closeSearch')" :to="{name: 'products-id', params: {id: product.id}}" class="flex flex-row gap-4 w-full" v-for="product in productLists" :key="product.id">
                         <img :src="product.images[0]" alt="" class="w-36 md:w-24 rounded-md aspect-square object-cover object-center">
                         <div class="flex flex-col justify-between items-start font-medium">
                             <div>
                                 <p>{{ product.name }}</p>
                                 <p class="font-light text-sm">{{ formatRp(product.price) }}</p>
                             </div>
-                            <p class="font-light text-sm line-clamp-1 text-ellipsis">{{ product.sub }}</p>
+                            <p class="text-sm line-clamp-1 text-ellipsis">{{ product.sub }}</p>
                         </div>
                     </NuxtLink>
                 </template>
@@ -45,7 +45,7 @@
     </div>
 </template>
 <script setup>
-const emit = defineEmits(["search"]);
+const emit = defineEmits(["closeSearch"]);
 const limit = ref(10);
 const c = ref("");
 const q = ref("");
