@@ -2,7 +2,7 @@
     <div class="w-full h-16 shadow-sm flex justify-between items-center flex-row px-4">
         <NuxtLink :to="{ name: 'shop' }" class="text-primary font-bold tracking-widest">Flux</NuxtLink>
         <div class="flex flex-row justify-center items-center gap-2">
-            <button type="submit" class="pr-1">
+            <button type="submit" class="pr-1" @click="$emit('search')">
                 <i class="text-2xl bx bx-search text-primary"></i>
             </button>
             <button @click="unauthenticated = true">
@@ -32,6 +32,7 @@
     </div>
 </template>
 <script setup>
+const emit = defineEmits(["search"])
 const user = useUser();
 const unauthenticated = useUnauthenticated();
 </script>

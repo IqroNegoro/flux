@@ -97,10 +97,7 @@ export default defineEventHandler(async e => {
         unit: "day"
     }
 
-    console.log(parameter)
-
     return midtrans().charge(parameter).then(async res => {
-        console.log(res);
         const order = await prisma.transactions.create({
             data: {
                 orderId: res.order_id,
@@ -132,7 +129,6 @@ export default defineEventHandler(async e => {
             data: order.id,
         }
     }).catch((err) => {
-        console.log(err)
         const {
             ApiResponse
         } = err;

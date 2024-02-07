@@ -190,7 +190,7 @@ useHead({
 
 useSeoMeta({
     title: () => `${product.value?.name || ""} | Flux`,
-    ogImage: () => product.value?.image || "",
+    ogImage: () => product.value?.images[0] || "",
     ogImageAlt: () => product.value?.name || "",
     ogTitle: () => `${product.value?.name || ""}`,
     twitterTitle: () => `${product.value?.name || ""}`,
@@ -201,6 +201,6 @@ useSeoMeta({
     ogSiteName: "Flux",
     applicationName: "Flux",
     twitterCard: "app",
-    twitterImage: () => product.value?.images || "",
+    twitterImage: () => product.value?.images[0] || "",
 })
 </script>
